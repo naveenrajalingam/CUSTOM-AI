@@ -2,7 +2,66 @@
 document.addEventListener('DOMContentLoaded', () => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // 1. Mobile Navigation Toggle
+  // 1a. Header Scroll Elevation (Transparent at top, Ink at 80% on scroll)
+  const header = document.querySelector('.header-a');
+  const handleHeaderScroll = () => {
+    if (header) {
+      if (window.scrollY > 20) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+  };
+  window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+  handleHeaderScroll();
+
+  // 1b. Parallax Background Field (40 tiny squares at 10-25% opacity, scroll-only parallax, no idle drift)
+  const parallaxContainer = document.getElementById('bg-parallax-squares');
+  if (parallaxContainer && !prefersReducedMotion) {
+    const squareCount = 40;
+    const squaresData = [];
+    let seed = 42;
+    const pseudoRandom = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+
+    for (let i = 0; i < squareCount; i++) {
+      const sq = document.createElement('div');
+      sq.className = 'parallax-square';
+      const size = Math.floor(pseudoRandom() * 6) + 4; // 4px to 9px
+      const left = (pseudoRandom() * 96 + 2).toFixed(2);
+      const top = (pseudoRandom() * 96 + 2).toFixed(2);
+      const opacity = (pseudoRandom() * 0.15 + 0.10).toFixed(2);
+      const speed = (pseudoRandom() * 0.18 - 0.09).toFixed(3);
+
+      sq.style.width = `${size}px`;
+      sq.style.height = `${size}px`;
+      sq.style.left = `${left}%`;
+      sq.style.top = `${top}%`;
+      sq.style.opacity = opacity;
+
+      parallaxContainer.appendChild(sq);
+      squaresData.push({ el: sq, speed: parseFloat(speed) });
+    }
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          squaresData.forEach(item => {
+            item.el.style.transform = `translate3d(0, ${scrollY * item.speed}px, 0)`;
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  // 1c. Mobile Navigation Toggle
   const mobileBtn = document.querySelector('.mobile-toggle-btn');
   const mobileDrawer = document.getElementById('mobile-drawer');
 
@@ -21,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 1b. Navigation Intelligence Dropdowns Controller (Corporate, Engineering, Medical)
+  // 1d. Navigation Intelligence Dropdowns Controller (Corporate, Engineering, Medical)
   const navDropdowns = document.querySelectorAll('.nav-dropdown');
   navDropdowns.forEach(dropdown => {
     const trigger = dropdown.querySelector('.nav-dropdown-trigger');
