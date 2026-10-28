@@ -1,0 +1,259 @@
+                  <svg id="exploded-assembly-svg" viewBox="0 0 520 250" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" class="my-auto max-w-[560px] w-full aspect-[2/1] block relative z-10">
+                    <defs>
+                      <linearGradient id="initChassisGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.4"/>
+                        <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.95"/>
+                        <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.4"/>
+                      </linearGradient>
+                      <linearGradient id="initCanopyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.3"/>
+                        <stop offset="40%" stop-color="#22D3EE" stop-opacity="0.95"/>
+                        <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.6"/>
+                      </linearGradient>
+                      <linearGradient id="initLaserBeamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#22D3EE" stop-opacity="0"/>
+                        <stop offset="15%" stop-color="#22D3EE" stop-opacity="0.95"/>
+                        <stop offset="85%" stop-color="#38BDF8" stop-opacity="0.95"/>
+                        <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
+                      </linearGradient>
+                      <filter id="cyanGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="2" result="blur"/>
+                        <feFlood flood-color="#22D3EE" flood-opacity="0.6" result="color"/>
+                        <feComposite in="color" in2="blur" operator="in" result="glow"/>
+                        <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+                      </filter>
+                      <filter id="orangeGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="2" result="blur"/>
+                        <feFlood flood-color="#F97316" flood-opacity="0.5" result="color"/>
+                        <feComposite in="color" in2="blur" operator="in" result="glow"/>
+                        <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+                      </filter>
+                    </defs>
+
+                    <!-- Coordinate Grid (Static Background) -->
+                    <line x1="20" y1="180" x2="500" y2="180" stroke="rgba(56, 189, 248, 0.18)" stroke-width="1"/>
+                    <line x1="45" y1="190" x2="475" y2="190" stroke="rgba(56, 189, 248, 0.08)" stroke-width="1" stroke-dasharray="4 4"/>
+                    <line x1="145" y1="20" x2="145" y2="235" stroke="rgba(56, 189, 248, 0.08)" stroke-width="1" stroke-dasharray="3 3"/>
+                    <line x1="260" y1="20" x2="260" y2="235" stroke="rgba(56, 189, 248, 0.1)" stroke-width="1" stroke-dasharray="3 3"/>
+                    <line x1="365" y1="20" x2="365" y2="235" stroke="rgba(56, 189, 248, 0.08)" stroke-width="1" stroke-dasharray="3 3"/>
+
+                    <!-- ===== 50 EXPLODABLE PARTS ===== -->
+                    <!-- All parts are wrapped in <g class="explode-part"> with data-ex/data-ey for explosion vector -->
+
+                    <!-- CHASSIS PLATFORM (Parts 1-8) -->
+                    <g class="explode-part" data-ex="0" data-ey="28" data-delay="0">
+                      <path d="M 85 160 L 125 156 L 255 156 L 255 174 L 115 174 Z" fill="rgba(6, 182, 212, 0.08)" stroke="url(#initChassisGrad)" stroke-width="1.5"/>
+                    </g>
+                    <g class="explode-part" data-ex="0" data-ey="28" data-delay="0.02">
+                      <path d="M 255 156 L 385 156 L 425 160 L 395 174 L 255 174 Z" fill="rgba(6, 182, 212, 0.08)" stroke="url(#initChassisGrad)" stroke-width="1.5"/>
+                    </g>
+                    <g class="explode-part" data-ex="0" data-ey="22" data-delay="0.04">
+                      <line x1="125" y1="165" x2="255" y2="165" stroke="rgba(34, 211, 238, 0.7)" stroke-width="1.6" stroke-dasharray="5 3"/>
+                    </g>
+                    <g class="explode-part" data-ex="0" data-ey="22" data-delay="0.06">
+                      <line x1="255" y1="165" x2="385" y2="165" stroke="rgba(34, 211, 238, 0.7)" stroke-width="1.6" stroke-dasharray="5 3"/>
+                    </g>
+                    <g class="explode-part" data-ex="-12" data-ey="18" data-delay="0.08">
+                      <line x1="165" y1="157" x2="155" y2="173" stroke="rgba(100, 116, 139, 0.6)" stroke-width="1.2"/>
+                      <line x1="205" y1="157" x2="195" y2="173" stroke="rgba(100, 116, 139, 0.6)" stroke-width="1.2"/>
+                    </g>
+                    <g class="explode-part" data-ex="0" data-ey="18" data-delay="0.1">
+                      <line x1="250" y1="157" x2="240" y2="173" stroke="rgba(100, 116, 139, 0.6)" stroke-width="1.2"/>
+                    </g>
+                    <g class="explode-part" data-ex="12" data-ey="18" data-delay="0.12">
+                      <line x1="295" y1="157" x2="285" y2="173" stroke="rgba(100, 116, 139, 0.6)" stroke-width="1.2"/>
+                      <line x1="340" y1="157" x2="330" y2="173" stroke="rgba(100, 116, 139, 0.6)" stroke-width="1.2"/>
+                    </g>
+                    <g class="explode-part" data-ex="0" data-ey="25" data-delay="0.14">
+                      <circle cx="125" cy="165" r="2.5" fill="#38BDF8"/>
+                      <circle cx="385" cy="165" r="2.5" fill="#38BDF8"/>
+                    </g>
+
+                    <!-- FRONT SUBFRAME (Parts 9-11) -->
+                    <g class="explode-part" data-ex="-30" data-ey="8" data-delay="0.16">
+                      <path d="M 85 160 L 118 148 L 138 156" stroke="#06B6D4" stroke-width="1.5" fill="none"/>
+                    </g>
+                    <g class="explode-part" data-ex="-38" data-ey="5" data-delay="0.18">
+                      <rect x="74" y="153" width="14" height="12" rx="2" fill="rgba(6, 182, 212, 0.2)" stroke="#38BDF8" stroke-width="1.2"/>
+                    </g>
+
+                    <!-- REAR SUBFRAME (Parts 12-13) -->
+                    <g class="explode-part" data-ex="30" data-ey="8" data-delay="0.2">
+                      <path d="M 372 156 L 398 148 L 425 160" stroke="#06B6D4" stroke-width="1.5" fill="none"/>
+                    </g>
+                    <g class="explode-part" data-ex="38" data-ey="5" data-delay="0.22">
+                      <rect x="422" y="154" width="14" height="11" rx="2" fill="rgba(6, 182, 212, 0.2)" stroke="#38BDF8" stroke-width="1.2"/>
+                    </g>
+
+                    <!-- FRONT POWERTRAIN (Parts 14-17) -->
+                    <g class="explode-part" data-ex="-25" data-ey="-15" data-delay="0.24">
+                      <rect x="110" y="150" width="22" height="15" rx="3" fill="rgba(249, 115, 22, 0.25)" stroke="#F97316" stroke-width="1.4"/>
+                      <line x1="110" y1="157" x2="132" y2="157" stroke="#FB923C" stroke-width="1" stroke-dasharray="2 2"/>
+                    </g>
+                    <g class="explode-part" data-ex="-18" data-ey="-10" data-delay="0.26">
+                      <line x1="121" y1="157" x2="145" y2="166" stroke="#FB923C" stroke-width="1.5"/>
+                    </g>
+                    <g class="explode-part" data-ex="-14" data-ey="-12" data-delay="0.28">
+                      <line x1="121" y1="157" x2="180" y2="144" stroke="rgba(251, 146, 60, 0.6)" stroke-width="1.2" stroke-dasharray="3 2"/>
+                    </g>
+
+                    <!-- REAR POWERTRAIN (Parts 18-21) -->
+                    <g class="explode-part" data-ex="25" data-ey="-15" data-delay="0.3">
+                      <rect x="360" y="148" width="26" height="18" rx="3" fill="rgba(249, 115, 22, 0.25)" stroke="#F97316" stroke-width="1.4"/>
+                      <line x1="364" y1="153" x2="382" y2="153" stroke="#FB923C" stroke-width="1"/>
+                      <line x1="364" y1="157" x2="382" y2="157" stroke="#FB923C" stroke-width="1"/>
+                      <line x1="364" y1="161" x2="382" y2="161" stroke="#FB923C" stroke-width="1"/>
+                    </g>
+                    <g class="explode-part" data-ex="20" data-ey="-10" data-delay="0.32">
+                      <line x1="373" y1="157" x2="365" y2="166" stroke="#FB923C" stroke-width="1.5"/>
+                    </g>
+                    <g class="explode-part" data-ex="18" data-ey="-12" data-delay="0.34">
+                      <line x1="373" y1="157" x2="395" y2="144" stroke="rgba(251, 146, 60, 0.6)" stroke-width="1.2" stroke-dasharray="3 2"/>
+                    </g>
+
+                    <!-- DRIVESHAFT (Part 22) -->
+                    <g class="explode-part" data-ex="0" data-ey="-20" data-delay="0.36">
+                      <path d="M 132 157 C 200 162, 300 162, 360 157" stroke="#EA580C" stroke-width="1.4" stroke-dasharray="4 2" fill="none"/>
+                    </g>
+
+                    <!-- FRONT FAR WHEEL (Part 23) -->
+                    <g class="explode-part" data-ex="-22" data-ey="-18" data-delay="0.38">
+                      <ellipse cx="180" cy="144" rx="16" ry="14" stroke="rgba(56, 189, 248, 0.45)" stroke-width="1.3" stroke-dasharray="3 2" fill="rgba(2, 6, 23, 0.5)"/>
+                    </g>
+                    <!-- REAR FAR WHEEL (Part 24) -->
+                    <g class="explode-part" data-ex="22" data-ey="-18" data-delay="0.4">
+                      <ellipse cx="395" cy="144" rx="16" ry="14" stroke="rgba(56, 189, 248, 0.45)" stroke-width="1.3" stroke-dasharray="3 2" fill="rgba(2, 6, 23, 0.5)"/>
+                    </g>
+
+                    <!-- FRONT NEAR WHEEL — Outer Tire (Part 25) -->
+                    <g class="explode-part" data-ex="-35" data-ey="15" data-delay="0.42">
+                      <ellipse cx="145" cy="166" rx="21" ry="19" stroke="#38BDF8" stroke-width="1.8" fill="rgba(2, 6, 23, 0.95)"/>
+                    </g>
+                    <!-- FRONT NEAR WHEEL — Mid Ring (Part 26) -->
+                    <g class="explode-part" data-ex="-30" data-ey="12" data-delay="0.44">
+                      <ellipse cx="145" cy="166" rx="14" ry="12" stroke="rgba(56, 189, 248, 0.85)" stroke-width="1.3" fill="none"/>
+                    </g>
+                    <!-- FRONT NEAR WHEEL — Inner Hub (Part 27) -->
+                    <g class="explode-part" data-ex="-26" data-ey="10" data-delay="0.46">
+                      <ellipse cx="145" cy="166" rx="9" ry="8" stroke="rgba(249, 115, 22, 0.75)" stroke-width="1.1" fill="none"/>
+                    </g>
+                    <!-- FRONT NEAR WHEEL — Caliper (Part 28) -->
+                    <g class="explode-part" data-ex="-40" data-ey="8" data-delay="0.48">
+                      <rect x="132" y="160" width="5" height="10" rx="1.5" fill="#F97316"/>
+                    </g>
+                    <!-- FRONT NEAR WHEEL — Axle Cross (Part 29) -->
+                    <g class="explode-part" data-ex="-28" data-ey="14" data-delay="0.5">
+                      <line x1="133" y1="166" x2="157" y2="166" stroke="rgba(56, 189, 248, 0.6)"/>
+                      <line x1="145" y1="156" x2="145" y2="176" stroke="rgba(56, 189, 248, 0.6)"/>
+                    </g>
+                    <!-- FRONT NEAR WHEEL — Suspension Arms (Part 30) -->
+                    <g class="explode-part" data-ex="-32" data-ey="6" data-delay="0.52">
+                      <path d="M 145 156 L 127 148 M 145 176 L 129 172" stroke="#06B6D4" stroke-width="1.2" fill="none"/>
+                    </g>
+
+                    <!-- REAR NEAR WHEEL — Outer Tire (Part 31) -->
+                    <g class="explode-part" data-ex="35" data-ey="15" data-delay="0.54">
+                      <ellipse cx="365" cy="166" rx="21" ry="19" stroke="#38BDF8" stroke-width="1.8" fill="rgba(2, 6, 23, 0.95)"/>
+                    </g>
+                    <!-- REAR NEAR WHEEL — Mid Ring (Part 32) -->
+                    <g class="explode-part" data-ex="30" data-ey="12" data-delay="0.56">
+                      <ellipse cx="365" cy="166" rx="14" ry="12" stroke="rgba(56, 189, 248, 0.85)" stroke-width="1.3" fill="none"/>
+                    </g>
+                    <!-- REAR NEAR WHEEL — Inner Hub (Part 33) -->
+                    <g class="explode-part" data-ex="26" data-ey="10" data-delay="0.58">
+                      <ellipse cx="365" cy="166" rx="9" ry="8" stroke="rgba(249, 115, 22, 0.75)" stroke-width="1.1" fill="none"/>
+                    </g>
+                    <!-- REAR NEAR WHEEL — Caliper (Part 34) -->
+                    <g class="explode-part" data-ex="40" data-ey="8" data-delay="0.6">
+                      <rect x="352" y="160" width="5" height="10" rx="1.5" fill="#F97316"/>
+                    </g>
+                    <!-- REAR NEAR WHEEL — Axle Cross (Part 35) -->
+                    <g class="explode-part" data-ex="28" data-ey="14" data-delay="0.62">
+                      <line x1="353" y1="166" x2="377" y2="166" stroke="rgba(56, 189, 248, 0.6)"/>
+                      <line x1="365" y1="156" x2="365" y2="176" stroke="rgba(56, 189, 248, 0.6)"/>
+                    </g>
+                    <!-- REAR NEAR WHEEL — Suspension Arms (Part 36) -->
+                    <g class="explode-part" data-ex="32" data-ey="6" data-delay="0.64">
+                      <path d="M 365 156 L 381 148 M 365 176 L 379 172" stroke="#06B6D4" stroke-width="1.2" fill="none"/>
+                    </g>
+
+                    <!-- SPACEFRAME A-PILLAR (Part 37) -->
+                    <g class="explode-part" data-ex="-18" data-ey="-28" data-delay="0.66">
+                      <line x1="165" y1="140" x2="218" y2="84" stroke="#22D3EE" stroke-width="1.8"/>
+                      <circle cx="218" cy="84" r="2.5" fill="#38BDF8"/>
+                    </g>
+                    <!-- SPACEFRAME ROOF RAIL (Part 38) -->
+                    <g class="explode-part" data-ex="0" data-ey="-35" data-delay="0.68">
+                      <line x1="218" y1="84" x2="328" y2="82" stroke="#22D3EE" stroke-width="1.8"/>
+                    </g>
+                    <!-- SPACEFRAME B-PILLAR (Part 39) -->
+                    <g class="explode-part" data-ex="0" data-ey="-30" data-delay="0.7">
+                      <line x1="270" y1="144" x2="270" y2="83" stroke="#22D3EE" stroke-width="1.8"/>
+                      <circle cx="270" cy="83" r="2.5" fill="#F97316"/>
+                    </g>
+                    <!-- SPACEFRAME C-PILLAR (Part 40) -->
+                    <g class="explode-part" data-ex="18" data-ey="-28" data-delay="0.72">
+                      <line x1="328" y1="82" x2="388" y2="136" stroke="#22D3EE" stroke-width="1.8"/>
+                      <circle cx="328" cy="82" r="2.5" fill="#38BDF8"/>
+                    </g>
+                    <!-- SPACEFRAME CROSS-BRACING (Part 41) -->
+                    <g class="explode-part" data-ex="0" data-ey="-32" data-delay="0.74">
+                      <path d="M 160 144 L 218 84 L 328 82 L 388 136 L 272 144 Z" stroke="rgba(34, 211, 238, 0.35)" stroke-width="1.2" stroke-dasharray="2 2" fill="none"/>
+                    </g>
+
+                    <!-- BODY — Front Hood Panel (Part 42) -->
+                    <g class="explode-part" data-ex="-15" data-ey="-42" data-delay="0.76">
+                      <path d="M 75 142 C 92 126, 134 116, 172 110 L 216 76 L 270 74 L 270 116 L 148 142 C 140 130, 108 130, 100 142 Z" fill="rgba(6, 182, 212, 0.06)" stroke="url(#initCanopyGrad)" stroke-width="1.8"/>
+                    </g>
+                    <!-- BODY — Rear Deck Panel (Part 43) -->
+                    <g class="explode-part" data-ex="15" data-ey="-42" data-delay="0.78">
+                      <path d="M 270 74 L 332 76 L 396 114 C 418 118, 432 126, 438 134 L 390 142 C 382 130, 350 130, 342 142 L 270 116 Z" fill="rgba(6, 182, 212, 0.06)" stroke="url(#initCanopyGrad)" stroke-width="1.8"/>
+                    </g>
+                    <!-- BODY — Windshield (Part 44) -->
+                    <g class="explode-part" data-ex="-8" data-ey="-48" data-delay="0.8">
+                      <polygon points="174,110 216,76 270,74 270,116" fill="rgba(34, 211, 238, 0.1)" stroke="rgba(56, 189, 248, 0.7)" stroke-width="1.3"/>
+                    </g>
+                    <!-- BODY — Rear Glass (Part 45) -->
+                    <g class="explode-part" data-ex="8" data-ey="-48" data-delay="0.82">
+                      <polygon points="270,74 332,76 396,114 270,116" fill="rgba(34, 211, 238, 0.1)" stroke="rgba(56, 189, 248, 0.7)" stroke-width="1.3"/>
+                    </g>
+
+                    <!-- AERO — Front Splitter (Part 46) -->
+                    <g class="explode-part" data-ex="-42" data-ey="20" data-delay="0.84">
+                      <path d="M 60 162 L 60 174 L 115 174" stroke="#38BDF8" stroke-width="1.6" fill="rgba(6, 182, 212, 0.2)"/>
+                    </g>
+                    <!-- AERO — Rear Diffuser (Part 47) -->
+                    <g class="explode-part" data-ex="42" data-ey="20" data-delay="0.86">
+                      <path d="M 390 172 L 442 165 L 442 174 L 390 178 Z" stroke="#38BDF8" stroke-width="1.6" fill="rgba(6, 182, 212, 0.2)"/>
+                    </g>
+
+                    <!-- MISC BRACKETS & NODES (Parts 48-50) -->
+                    <g class="explode-part" data-ex="-20" data-ey="-8" data-delay="0.88">
+                      <circle cx="160" cy="144" r="2" fill="#22D3EE"/>
+                      <circle cx="180" cy="155" r="1.8" fill="#22D3EE"/>
+                      <line x1="160" y1="144" x2="180" y2="155" stroke="rgba(34, 211, 238, 0.5)" stroke-width="0.8"/>
+                    </g>
+                    <g class="explode-part" data-ex="20" data-ey="-8" data-delay="0.9">
+                      <circle cx="350" cy="144" r="2" fill="#22D3EE"/>
+                      <circle cx="375" cy="155" r="1.8" fill="#22D3EE"/>
+                      <line x1="350" y1="144" x2="375" y2="155" stroke="rgba(34, 211, 238, 0.5)" stroke-width="0.8"/>
+                    </g>
+                    <g class="explode-part" data-ex="0" data-ey="-25" data-delay="0.92">
+                      <circle cx="255" cy="100" r="2" fill="#F97316"/>
+                      <circle cx="270" cy="110" r="1.5" fill="#22D3EE"/>
+                      <circle cx="285" cy="100" r="2" fill="#F97316"/>
+                      <line x1="255" y1="100" x2="285" y2="100" stroke="rgba(249, 115, 22, 0.5)" stroke-width="0.8" stroke-dasharray="2 2"/>
+                    </g>
+
+                    <!-- Laser Scanner Sweeping Beam -->
+                    <line x1="0" y1="15" x2="0" y2="230" stroke="url(#initLaserBeamGrad)" stroke-width="2.5" class="cad-scan-beam"/>
+
+                    <!-- Assembly Guide Lines (visible during explosion) -->
+                    <g id="assembly-guide-lines" opacity="0">
+                      <line x1="260" y1="30" x2="260" y2="220" stroke="rgba(34, 211, 238, 0.2)" stroke-width="0.8" stroke-dasharray="2 2"/>
+                      <line x1="60" y1="130" x2="460" y2="130" stroke="rgba(34, 211, 238, 0.15)" stroke-width="0.8" stroke-dasharray="2 2"/>
+                      <circle cx="260" cy="130" r="3" stroke="rgba(34, 211, 238, 0.3)" fill="none" stroke-width="0.8"/>
+                      <circle cx="260" cy="130" r="60" stroke="rgba(34, 211, 238, 0.08)" fill="none" stroke-width="0.5" stroke-dasharray="3 3"/>
+                      <circle cx="260" cy="130" r="100" stroke="rgba(34, 211, 238, 0.05)" fill="none" stroke-width="0.5" stroke-dasharray="4 4"/>
+                    </g>
+                  </svg>

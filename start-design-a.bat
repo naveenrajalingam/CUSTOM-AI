@@ -1,13 +1,12 @@
 @echo off
 setlocal
-title SupplyChainz Applied AI - Design A (Dark Theme)
+title SupplyChainz Applied AI
 
 :: Navigate to script directory
 cd /d "%~dp0"
 
 echo ====================================================================
-echo   SUPPLYCHAINZ INFOTECH -- APPLIED AI PROTOTYPE
-echo   Version: DESIGN A (Modern Dark AI Innovation)
+echo   SUPPLYCHAINZ INFOTECH -- APPLIED AI
 echo ====================================================================
 echo.
 
@@ -21,13 +20,18 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-echo Starting local server and opening Design A in your default browser...
+if not exist node_modules (
+    echo Installing dependencies...
+    call npm install
+)
+
+echo Starting local server and opening the site in your default browser...
 echo.
 echo   - Local URL: http://localhost:3000/
 echo   - Press [Ctrl + C] in this window to stop the server when finished.
 echo.
 
-call npm run dev:a
+call npm run dev
 
 if %errorlevel% neq 0 (
     echo.
