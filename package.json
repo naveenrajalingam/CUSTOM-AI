@@ -1,12 +1,11 @@
 {
   "name": "supplychainz-applied-ai",
   "version": "1.0.0",
-  "description": "SupplyChainz Infotech — Applied AI Pillar Prototypes (Design A, B, C)",
+  "description": "SupplyChainz Infotech — Applied AI",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "dev:a": "vite --host --open /design-a/",
-    "dev:b": "vite --host --open /design-b/",
+    "dev": "vite --host --open",
+    "dev:a": "vite --host --open",
     "build": "vite build",
     "preview": "vite preview"
   },

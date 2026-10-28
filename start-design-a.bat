@@ -23,7 +23,7 @@ if %errorlevel% neq 0 (
 
 echo Starting local server and opening Design A in your default browser...
 echo.
-echo   - Local URL: http://localhost:3000/design-a/
+echo   - Local URL: http://localhost:3000/
 echo   - Press [Ctrl + C] in this window to stop the server when finished.
 echo.
 

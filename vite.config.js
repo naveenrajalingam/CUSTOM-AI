@@ -7,13 +7,11 @@ export default defineConfig({
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
         designA: resolve(import.meta.dirname, 'design-a/index.html'),
-        designB: resolve(import.meta.dirname, 'design-b/index.html'),
-        hub: resolve(import.meta.dirname, 'hub.html'),
       },
     },
   },
   server: {
     port: 3000,
-    open: false,
+    open: true,
   },
 });
