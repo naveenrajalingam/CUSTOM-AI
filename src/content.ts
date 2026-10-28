@@ -30,7 +30,6 @@ export const hero = {
   title: ['AI that does', 'the work.'],
   lede: 'Most AI answers questions. Ours learns a domain, takes on its workflows, and progressively does more of the real work.',
   primary: 'Start an engineering conversation',
-  secondary: 'Meet the agents',
   core: 'Applied AI',
   figureLabel:
     'Applied AI at the centre of three intelligence branches: Corporate Intelligence, Engineering Intelligence, and Medical Intelligence (planned).',

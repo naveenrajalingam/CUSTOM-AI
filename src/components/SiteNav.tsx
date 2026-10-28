@@ -10,7 +10,7 @@ const delay = (s: number) => ({ animationDelay: `${s}s` })
  * One slim glass bar for the whole page: logo left, the three intelligence
  * areas centred (each opens onto its products), the call to action right. The
  * area you're reading is marked, and a hairline of cyan shows
- * how far you've read. On phones and tablets the areas fold into a small glass menu.
+ * how far you've read. On phone-sized screens, where they can't fit, the areas fold into a small glass menu.
  */
 export function SiteNav() {
   const [solid, setSolid] = useState(false)
@@ -72,12 +72,12 @@ export function SiteNav() {
           : 'bg-transparent'
       }`}
     >
-      <div className="grid h-16 grid-cols-[1fr_auto] items-center gap-4 px-6 md:px-10 lg:grid-cols-[1fr_auto_1fr] lg:gap-6">
+      <div className="grid h-16 grid-cols-[1fr_auto] items-center gap-4 px-6 md:px-10 min-[900px]:grid-cols-[1fr_auto_1fr] min-[900px]:gap-6">
         <a href="#top" className="anim-stagger justify-self-start" style={delay(0.1)} aria-label="SupplyChainz Applied AI, back to top">
           <Logo label="Applied AI" interactive />
         </a>
 
-        <ul className="anim-stagger hidden items-center gap-9 lg:flex" style={delay(0.2)}>
+        <ul className="anim-stagger hidden items-center gap-6 min-[900px]:flex xl:gap-9" style={delay(0.2)}>
           {nav.map((group) => (
             <NavMenu key={group.label} group={group} active={current === group.label} />
           ))}
@@ -94,7 +94,7 @@ export function SiteNav() {
             aria-controls="mobile-menu"
             aria-label={open ? 'Close menu' : 'Open menu'}
             onClick={() => setOpen((o) => !o)}
-            className="cut-border flex h-10 w-10 cursor-pointer items-center justify-center text-paper lg:hidden"
+            className="cut-border flex h-10 w-10 cursor-pointer items-center justify-center text-paper min-[900px]:hidden"
           >
             <span aria-hidden="true" className="relative block h-3 w-4">
               <span
@@ -112,7 +112,7 @@ export function SiteNav() {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="max-h-[calc(100svh-4rem)] overflow-y-auto border-t border-[var(--line)] px-6 pt-2 pb-6 md:px-10 lg:hidden"
+        className="max-h-[calc(100svh-4rem)] overflow-y-auto border-t border-[var(--line)] px-6 pt-2 pb-6 md:px-10 min-[900px]:hidden"
       >
         <ul className="divide-y divide-[var(--line)]">
           {nav.map((group) => (

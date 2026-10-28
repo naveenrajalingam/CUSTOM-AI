@@ -1,5 +1,5 @@
 import { SQUARES } from '../brand/mark'
-import { contactHref, engineering, hero, pillars } from '../content'
+import { contactHref, hero, pillars } from '../content'
 import { useReducedMotion } from '../lib/motion'
 import { CutLink } from './CutLink'
 
@@ -90,9 +90,6 @@ export function Hero() {
           </p>
           <div className="anim-stagger mt-10 flex flex-wrap items-center gap-3" style={delay(0.75)}>
             <CutLink href={contactHref}>{hero.primary}</CutLink>
-            <CutLink href={`#${engineering.id}`} variant="outline">
-              {hero.secondary}
-            </CutLink>
           </div>
         </div>
 
