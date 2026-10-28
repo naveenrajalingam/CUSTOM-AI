@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { contactHref, hero, nav } from '../content'
+import { contactHref, nav } from '../content'
 import { CutLink } from './CutLink'
 import { Logo } from './Logo'
 import { NavMenu } from './NavMenu'
@@ -133,9 +133,6 @@ export function SiteNav() {
             </li>
           ))}
         </ul>
-        <CutLink href={contactHref} className="mt-4 w-full" onClick={() => setOpen(false)}>
-          {hero.primary}
-        </CutLink>
       </div>
 
       <div className="h-px">

@@ -83,11 +83,11 @@ export function NavMenu({ group, active }: { group: Group; active: boolean }) {
       {/* the panel hangs a little below the bar; the padding keeps the pointer inside on the way down */}
       <div
         id={id}
-        className={`absolute top-full left-1/2 -translate-x-1/2 pt-5 transition-[opacity,filter,translate] duration-500 ease-[var(--ease-glide)] ${
+        className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-[opacity,filter,translate] duration-500 ease-[var(--ease-glide)] ${
           open ? 'visible translate-y-0 opacity-100 blur-0' : 'invisible -translate-y-1.5 opacity-0 blur-[6px]'
         }`}
       >
-        <ul className="relative w-max min-w-[18rem] overflow-hidden rounded-2xl bg-deep/80 p-2 ring-1 ring-[var(--line)] backdrop-blur-xl shadow-[0_30px_80px_-30px_rgb(0_0_0/0.7)]">
+        <ul className="relative w-60 overflow-hidden rounded-xl bg-deep/90 p-1.5 ring-1 ring-[var(--line)] backdrop-blur-xl shadow-[0_30px_80px_-30px_rgb(0_0_0/0.7)]">
           <span
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,rgb(238_242_248/0.25),transparent)]"
@@ -97,16 +97,16 @@ export function NavMenu({ group, active }: { group: Group; active: boolean }) {
               <a
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="group/item block rounded-xl px-4 py-3 transition-colors duration-300 hover:bg-paper/[0.06] focus-visible:bg-paper/[0.06]"
+                className="group/item block rounded-lg px-3 py-2 transition-colors duration-300 hover:bg-paper/[0.06] focus-visible:bg-paper/[0.06]"
               >
                 <span className="flex items-center justify-between gap-4">
-                  <span className="flex items-center gap-2.5 text-[0.9375rem] font-semibold text-paper">
+                  <span className="flex items-center gap-2 text-[0.875rem] font-semibold text-paper">
                     <span aria-hidden="true" className="h-2 w-2 rounded-[2px]" style={{ background: group.color }} />
                     {item.label}
                   </span>
                   <span className="text-[0.75rem] text-haze">{item.status}</span>
                 </span>
-                <span className="mt-1 block pl-[1.125rem] text-[0.8125rem] text-mist">{item.note}</span>
+                <span className="mt-0.5 block pl-4 text-[0.75rem] leading-snug text-mist">{item.note}</span>
               </a>
             </li>
           ))}

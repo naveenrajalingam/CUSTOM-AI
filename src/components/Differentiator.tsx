@@ -1,25 +1,23 @@
-import { hr, site } from '../content'
-import { CutLink } from './CutLink'
+import { hr } from '../content'
 import { Emerge } from './Emerge'
 
-// What sets HR Central apart, said once and large, with the way out to the platform.
+// What sets HR Central apart, in a glass card beside the chapter's heading:
+// the statement.
 export function Differentiator() {
   const { differentiator: d } = hr
   return (
-    <div className="px-6 pt-24 pb-8 md:px-10 md:pt-32">
-      <Emerge className="over-field mx-auto max-w-[1320px]">
-        <span aria-hidden="true" className="block h-1 w-10 rounded-full bg-amber" />
-        <p className="mt-6 flex items-center gap-2.5 text-[0.9375rem] text-mist">
+    <Emerge>
+      <div className="relative overflow-hidden rounded-3xl bg-deep/80 p-7 ring-1 ring-[var(--line)] md:p-9">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,rgb(238_242_248/0.25),transparent)]"
+        />
+        <p className="flex items-center gap-2.5 text-[0.9375rem] text-mist">
           <span aria-hidden="true" className="h-2.5 w-2.5 rounded-[2px] bg-amber" />
           {d.tag}
         </p>
-        <blockquote className="display mt-6 max-w-[24ch] text-[clamp(2rem,4.4vw,3.75rem)] leading-[1.08] text-paper">{d.quote}</blockquote>
-        <div className="mt-10">
-          <CutLink href={site.hrCentralUrl} target="_blank" rel="noopener noreferrer" variant="outline">
-            {d.cta} <span aria-hidden="true">↗</span>
-          </CutLink>
-        </div>
-      </Emerge>
-    </div>
+        <blockquote className="display mt-4 text-[clamp(1.25rem,1.7vw,1.6rem)] leading-snug text-paper">{d.quote}</blockquote>
+      </div>
+    </Emerge>
   )
 }

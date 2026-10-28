@@ -175,7 +175,8 @@ export default function GlobalField() {
       return // no WebGL: the plain navy page remains
     }
     const small = window.matchMedia('(max-width: 767px)').matches
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2))
+    // capped: the field is soft points, so extra pixels cost GPU time without looking sharper
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5))
     renderer.setClearColor(INK)
     host.appendChild(renderer.domElement)
     renderer.domElement.style.display = 'block'

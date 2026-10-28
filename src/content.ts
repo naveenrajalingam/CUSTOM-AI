@@ -2,8 +2,10 @@
 
 export const site = {
   contactEmail: 'info@supplychainz.in',
+  mainSiteUrl: 'https://www.supplychainz.in',
   hrCentralUrl: 'https://hrcentral.in',
-  privacyUrl: '#privacy',
+  /** no privacy page exists yet; set its address here and the form links to it */
+  privacyUrl: '',
 }
 
 /** Where every "let's talk" button goes: the contact form near the end of the page. */
@@ -17,7 +19,7 @@ export const nav: { label: string; color: string; items: { href: string; label: 
     items: [{ href: '#digital-design-agent', label: 'Digital Design Agent', note: 'Autonomous engineering & CAD automation', status: 'Active' }],
   },
   {
-    label: 'Corporate Intelligence',
+    label: 'Enterprise Intelligence',
     color: '#f5b134',
     items: [{ href: '#hr-central', label: 'HR Central', note: 'AI-native talent lifecycle platform', status: 'Active' }],
   },
@@ -29,16 +31,15 @@ export const hero = {
   tag: 'Applied AI // Agentic architecture',
   title: ['AI that does', 'the work.'],
   lede: 'Most AI answers questions. Ours learns a domain, takes on its workflows, and progressively does more of the real work.',
-  primary: 'Start an engineering conversation',
   core: 'Applied AI',
   figureLabel:
-    'Applied AI at the centre of three intelligence branches: Corporate Intelligence, Engineering Intelligence, and Medical Intelligence (planned).',
+    'Applied AI at the centre of three intelligence branches: Enterprise Intelligence, Engineering Intelligence, and Medical Intelligence (planned).',
 }
 
 /** The three intelligence pillars, as drawn in the hero and listed in the menu. */
 export const pillars = [
   {
-    name: 'Corporate Intelligence',
+    name: 'Enterprise Intelligence',
     focus: 'Enterprise • Talent Mesh',
     product: 'HR Central',
     note: 'AI-native talent lifecycle platform',
@@ -68,47 +69,41 @@ export const pillars = [
 
 export const engineering = {
   id: 'digital-design-agent',
-  tag: '01 · Domain engine · Engineering Intelligence',
+  name: 'Digital Design Agent',
   title: 'From design automation to autonomous engineering.',
-  lede: 'An AI engineering agent capable of understanding an engineering problem, developing a solution, and translating that solution into a production-ready design.',
-  target: 'Target: Automotive Engineering • Active POC',
+  lede: 'An AI agent that takes an engineering problem all the way to a production-ready design.',
   stagesLabel: 'Engineering evolution stages',
   stages: [
     {
       tab: 'Execute',
-      eyebrow: 'Capability: Execute',
       title: 'Digital Design Agent',
-      chip: 'Active POC',
-      copy: 'Executes design activities based on engineering instructions and requirements.',
+      copy: 'Carries out design work from your engineering instructions.',
       cadMode: 'SYS.ENG_CAD // AUTONOMOUS_ASSEMBLY',
     },
     {
       tab: 'Augment',
-      eyebrow: 'Capability: Augment',
       title: 'Engineering Knowledge Layer',
-      chip: 'In Development',
-      copy: 'Progressively incorporates engineering standards, methodologies, simulation knowledge, modelling principles, validation rules and governance.',
+      copy: 'Learns your standards, simulation rules and governance.',
       cadMode: 'SYS.ENG_CAD // KNOWLEDGE_LAYER',
     },
     {
       tab: 'Design',
-      eyebrow: 'Capability: Design',
       title: 'Autonomous Engineering',
-      chip: 'Strategic North Star',
-      copy: 'Understands an engineering problem, develops and proposes a solution, then creates the design after approval.',
+      copy: 'Proposes the solution, then designs it once you approve.',
       cadMode: 'SYS.ENG_CAD // AUTONOMOUS_ENGINEERING',
     },
   ],
   cad: {
-    totalNodes: 14820,
-    nodesLabel: 'Nodes',
+    partsLabel: 'Parts',
+    /** the parts count the console reports: the full bill of materials the drawing stands for */
+    parts: 4318,
     status: {
-      assembled: 'ASSEMBLY VALIDATED // TOLERANCE: ±0.02mm',
-      exploding: 'EXPLODED VIEW // STRUCTURAL ANALYSIS',
-      exploded: 'DECONSTRUCTED // 50 MODULES SEPARATED',
-      reassembling: 'AUTONOMOUS REASSEMBLY // PRECISION LOCK',
+      staged: 'SYS.ENG_CAD // ROBOTIC_ASSEMBLY // PARTS_STAGED',
+      assembling: 'SYS.ENG_CAD // ROBOTIC_ASSEMBLY // PRECISION_LOCK',
+      assembled: 'SYS.ENG_CAD // ROBOTIC_ASSEMBLY // ASSEMBLY_VALIDATED',
+      resetting: 'SYS.ENG_CAD // ROBOTIC_ASSEMBLY // CYCLE_RESET',
     },
-    label: 'An autonomous CAD assembly of a car, exploding into its parts and reassembling.',
+    label: 'A robotic assembly line: three robot arms pick scattered car parts, guide them in along laser lines and weld them into a complete car, then the cycle resets.',
   },
 }
 
@@ -125,9 +120,9 @@ export type ArtId =
 
 export const hr = {
   id: 'hr-central',
-  tag: '02 · AI-native talent platform · Corporate Intelligence',
+  name: 'HR Central',
   title: 'One AI-native platform for the entire talent lifecycle.',
-  lede: 'A highly customizable, intuitive and agentic AI platform serving both sides of the talent ecosystem.',
+  lede: 'One agentic platform for candidates and employers alike.',
   status: 'Platform being developed',
   groups: [
     {
@@ -194,71 +189,14 @@ export const hr = {
   differentiator: {
     tag: 'The differentiator',
     quote:
-      'A deeply customizable, AI-agentic platform that adapts to the individual, the employer and the workflow — rather than forcing them into a rigid HR system.',
-    cta: 'Visit hrcentral.in',
+      'A platform that adapts to the person, the employer and the workflow — not a rigid HR system they must adapt to.',
   },
-}
-
-export const architecture = {
-  id: 'operating-architecture',
-  tag: 'The opportunity',
-  title: 'Two beachheads. One AI-native model.',
-  lede: 'An enterprise solution in engineering design and a platform-scale opportunity in talent — built on the same agentic AI thesis.',
-  beachheads: [
-    {
-      tag: 'Engineering AI',
-      title: 'Engineering & Design Automation',
-      body: 'Deep vertical enterprise solution automating complex CAD, physics & structural workflows.',
-      accent: 'signal',
-      rows: [
-        ['Domain', 'Engineering & Design'],
-        ['Starting point', 'Design Automation'],
-        ['AI role', 'Execute → Learn → Design'],
-        ['Commercial posture', 'Active POC // Enterprise'],
-        ['North star', 'Autonomous Engineering'],
-      ],
-    },
-    {
-      tag: 'HR Central',
-      title: 'AI-Native Talent Platform',
-      body: 'Horizontal platform-scale opportunity covering the entire talent continuum from Campus to Retire.',
-      accent: 'amber',
-      rows: [
-        ['Domain', 'Talent & HR'],
-        ['Starting point', 'Talent Lifecycle'],
-        ['AI role', 'Assist → Assess → Orchestrate'],
-        ['Commercial posture', 'Active R&D // Platform'],
-        ['North star', 'AI-Native Talent Ecosystem'],
-      ],
-    },
-  ] as const,
-  thesis: {
-    tag: 'Shared agentic thesis',
-    body: 'Both beachheads share the same underlying operating model: systematically replacing manual routine tasks with autonomous agent loops — from continuous feedback to verified enterprise outputs.',
-  },
-  model: {
-    tag: 'The operating model',
-    title: 'The 4-Phase Shared Operating Model',
-    lede: 'How we apply agentic AI to complex enterprise domains — moving systematically from raw human expertise to full autonomy.',
-    steps: [
-      { title: 'Domain Expertise', body: 'Contextual immersion into engineering physics, CAD rules, and talent lifecycles.' },
-      { title: 'AI Agent Workflows', body: 'Deploying specialized agentic architectures tuned for deterministic multi-step task execution.' },
-      { title: 'Knowledge & Governance', body: 'Encoding institutional standards, simulation physics, FEA rules, and validation governance.' },
-      { title: 'Autonomous Scaling', body: 'Progressing from instruction execution to augmented validation, proactive design, and enterprise scale.' },
-    ],
-  },
-}
-
-export const closing = {
-  title: 'AI systems that don’t just answer questions.',
-  body: 'They understand domains, execute workflows and progressively take on real work.',
-  primary: 'Start an engineering conversation',
-  secondary: 'Visit hrcentral.in',
 }
 
 export const contact = {
   id: 'lets-talk',
   title: 'Let’s talk.',
+  close: 'Close',
   lede: 'Tell us what you’re working on. A senior member of our team will get back to you.',
   fields: {
     name: 'Your name',
@@ -267,11 +205,6 @@ export const contact = {
     email: 'Work email',
     emailPlaceholder: 'name@company.com',
     emailError: 'Please enter a valid work email',
-    company: 'Company',
-    companyPlaceholder: 'Your company',
-    companyError: 'Please enter your company',
-    role: 'Your role',
-    rolePlaceholder: 'e.g. VP Supply Chain',
     topic: 'What’s it about?',
     message: 'Message',
     messagePlaceholder: 'A few lines on what you’re trying to solve.',
@@ -284,7 +217,8 @@ export const contact = {
     { value: 'Partnership', label: 'Partnership' },
     { value: 'General Inquiry', label: 'General Inquiry' },
   ],
-  consent: 'I agree that SupplyChainz may use these details to reply to me. See our',
+  consent: 'I agree that SupplyChainz may use these details to reply to me.',
+  privacyLead: 'See our',
   privacyLabel: 'Privacy notice',
   submit: 'Send message →',
   invalid: 'Please fill in all required fields.',
@@ -301,12 +235,26 @@ export const contact = {
 
 export const footer = {
   id: 'inquiries',
-  brand: 'Applied AI // SupplyChainz',
+  blurb: 'The Applied AI division of SupplyChainz: AI that learns a domain and does its work.',
   note: 'CONFIDENTIAL • Applied AI Division',
-  links: [
-    { href: '#digital-design-agent', label: 'Digital Design Agent' },
-    { href: '#hr-central', label: 'HR Central' },
-    { href: '#operating-architecture', label: 'Architecture' },
-    { href: '#lets-talk', label: 'Inquiries' },
+  /** the registered company name, as on supplychainz.in */
+  company: 'SupplyChainz Infotech Private Limited',
+  columns: [
+    {
+      title: 'Products',
+      links: [
+        { href: '#digital-design-agent', label: 'Digital Design Agent' },
+        { href: '#hr-central', label: 'HR Central' },
+        { href: 'https://hrcentral.in', label: 'hrcentral.in', external: true },
+      ],
+    },
+    {
+      title: 'Company',
+      links: [
+        { href: '#lets-talk', label: 'Inquiries' },
+        { href: 'https://www.supplychainz.in', label: 'supplychainz.in', external: true },
+      ],
+    },
   ],
+  officesTitle: 'Offices',
 }

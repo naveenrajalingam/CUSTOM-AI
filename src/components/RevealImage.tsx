@@ -53,7 +53,7 @@ export function RevealImage({
 
     const loop = () => {
       const target = reduced ? 1 : (progressRef.current ?? 0)
-      shown += (target - shown) * 0.12
+      shown += (target - shown) * 0.18
       if (Math.abs(target - shown) < 0.0005) shown = target
       apply(shown)
       if (running) raf = requestAnimationFrame(loop)

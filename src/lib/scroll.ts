@@ -8,6 +8,15 @@ export function setScroller(l: Lenis | null) {
   instance = l
 }
 
+/** Hold the page still (while a dialog is open), or let it scroll again. */
+export function setScrollLocked(locked: boolean) {
+  if (instance) {
+    if (locked) instance.stop()
+    else instance.start()
+  }
+  document.documentElement.style.overflow = locked ? 'hidden' : ''
+}
+
 /** Apple-like ease: quick to start, long soft landing. */
 export const glide = (t: number) => 1 - Math.pow(1 - t, 4)
 
@@ -15,7 +24,7 @@ export const glide = (t: number) => 1 - Math.pow(1 - t, 4)
 export function scrollToY(target: number) {
   const distance = Math.abs(target - window.scrollY)
   if (instance) {
-    instance.scrollTo(target, { duration: Math.min(2.4, 1 + distance / 6000), easing: glide })
+    instance.scrollTo(target, { duration: Math.min(1.5, 0.7 + distance / 9000), easing: glide })
   } else {
     window.scrollTo({ top: target, behavior: 'smooth' })
   }

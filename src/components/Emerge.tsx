@@ -14,7 +14,7 @@ export function Emerge({
   children,
   className = '',
   start = 'top 95%',
-  end = 'top 62%',
+  end = 'top 72%',
 }: {
   children: ReactNode
   className?: string
@@ -35,7 +35,7 @@ export function Emerge({
         y: 0,
         filter: 'blur(0px)',
         ease: 'power2.out',
-        scrollTrigger: { trigger: el, start, end, scrub: 0.9 },
+        scrollTrigger: { trigger: el, start, end, scrub: 0.5 },
         // drop the filter once settled so text renders crisp and cheap
         onComplete: () => gsap.set(el, { clearProps: 'filter' }),
       },

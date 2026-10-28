@@ -1,23 +1,20 @@
-import { useState, type FormEvent, type ReactNode } from 'react'
-import { contact, footer, site } from '../content'
-import { Emerge } from './Emerge'
-import { Logo } from './Logo'
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'react'
+import { contact, contactHref, site } from '../content'
+import { setScrollLocked } from '../lib/scroll'
 
-// The page's last stop: the "Let's talk" form in the site's glass, the address
-// to write to directly, and the footer. There is no server, so sending checks
-// the form and opens the visitor's own email app with the message filled in.
+// "Let's talk": the contact form in a window over the page, opened by any
+// "Let's talk" link. There is no server, so sending checks the form and opens
+// the visitor's own email app with the message filled in.
 
-const YEAR = new Date().getFullYear()
 const { fields } = contact
 
 const INPUT =
   'w-full rounded-xl bg-ink/55 px-4 py-3.5 text-[1rem] text-paper ring-1 ring-[var(--line-strong)] transition-[box-shadow,background-color] duration-300 ease-[var(--ease-glide)] placeholder:text-haze/80 hover:ring-paper/30 focus:bg-ink/80 focus:ring-2 focus:ring-signal focus:outline-none aria-invalid:ring-orange'
 
-type Key = 'name' | 'email' | 'company' | 'message'
+type Key = 'name' | 'email' | 'message'
 const required: { key: Key; error: string }[] = [
   { key: 'name', error: fields.nameError },
   { key: 'email', error: fields.emailError },
-  { key: 'company', error: fields.companyError },
   { key: 'message', error: fields.messageError },
 ]
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -58,22 +55,13 @@ function Field({
 /** One line per field, so the email reads cleanly in any mail app. */
 function compose(data: FormData) {
   const get = (k: string) => String(data.get(k) ?? '').trim()
-  const subject = `[Applied AI] ${get('topic')} — ${get('company')}`
-  const body = [
-    `${fields.name}: ${get('name')}`,
-    `${fields.email}: ${get('email')}`,
-    `${fields.company}: ${get('company')}`,
-    get('role') ? `${fields.role}: ${get('role')}` : null,
-    `${fields.topic} ${get('topic')}`,
-    '',
-    get('message'),
-  ]
-    .filter((line) => line !== null)
-    .join('\n')
+  const subject = `[Applied AI] ${get('topic')} — ${get('name')}`
+  const body = [`${fields.name}: ${get('name')}`, `${fields.email}: ${get('email')}`, `${fields.topic} ${get('topic')}`, '', get('message')].join('\n')
   return `mailto:${site.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
 export function Contact() {
+  const ref = useRef<HTMLDialogElement>(null)
   const [errors, setErrors] = useState<Partial<Record<Key, string>>>({})
   const [feedback, setFeedback] = useState<'invalid' | 'sent' | null>(null)
 
@@ -105,22 +93,68 @@ export function Contact() {
     onInput: clear(key),
   })
 
-  return (
-    <section id={contact.id} aria-labelledby="contact-title" className="relative px-6 pt-24 md:px-10 md:pt-32">
-      <div className="mx-auto max-w-[1320px]">
-        <Emerge className="over-field">
-          <h2 id="contact-title" className="display text-[clamp(3.5rem,9vw,8rem)] leading-[0.95] text-paper">
-            {contact.title}
-          </h2>
-          <p className="measure mt-6 text-[1.125rem] text-mist md:mt-8 md:text-[1.25rem]">{contact.lede}</p>
-        </Emerge>
+  // open from any "Let's talk" link (and when the page is opened at #lets-talk); the page holds still behind it
+  useEffect(() => {
+    const dialog = ref.current!
+    const open = () => {
+      if (dialog.open) return
+      dialog.showModal()
+      setScrollLocked(true)
+    }
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element).closest?.(`a[href="${contactHref}"]`)
+      if (!a) return
+      e.preventDefault()
+      open()
+    }
+    const onClose = () => setScrollLocked(false)
+    document.addEventListener('click', onClick, true)
+    dialog.addEventListener('close', onClose)
+    if (window.location.hash === contactHref) open()
+    return () => {
+      document.removeEventListener('click', onClick, true)
+      dialog.removeEventListener('close', onClose)
+    }
+  }, [])
 
-        <div className="mt-12 grid gap-12 md:mt-16 lg:grid-cols-12 lg:gap-16">
-          <Emerge className="lg:col-span-7">
+  const close = () => ref.current?.close()
+
+  return (
+    <dialog
+      ref={ref}
+      id={contact.id}
+      aria-labelledby="contact-title"
+      data-lenis-prevent
+      // a click on the dimmed backdrop (the dialog element itself) closes it
+      onClick={(e) => e.target === e.currentTarget && close()}
+      className="contact-dialog m-auto max-h-[92svh] w-[min(68rem,calc(100vw-2rem))] overflow-y-auto rounded-3xl bg-deep p-0 text-paper ring-1 ring-[var(--line-strong)] backdrop:bg-ink/75 backdrop:backdrop-blur-sm"
+    >
+      <div className="relative p-7 md:p-10">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,rgb(238_242_248/0.25),transparent)]"
+        />
+        <button
+          type="button"
+          onClick={close}
+          aria-label={contact.close}
+          className="cut-sm absolute top-5 right-5 flex h-10 w-10 cursor-pointer items-center justify-center bg-paper/[0.06] text-mist transition-colors hover:bg-paper/10 hover:text-paper"
+        >
+          <svg viewBox="0 0 14 14" aria-hidden="true" className="h-3.5 w-3.5">
+            <path d="M1 1l12 12M13 1 1 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        </button>
+        <h2 id="contact-title" className="display pr-12 text-[clamp(1.85rem,3vw,2.75rem)] text-paper">
+          {contact.title}
+        </h2>
+        <p className="mt-3 max-w-[40rem] text-[1.0625rem] text-mist">{contact.lede}</p>
+
+        <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-8">
             <form
               noValidate
               onSubmit={onSubmit}
-              className="relative overflow-hidden rounded-3xl bg-deep/55 p-7 ring-1 ring-[var(--line)] backdrop-blur-xl md:p-10"
+              className="relative"
             >
               {/* a soft light along the top edge of the glass */}
               <span
@@ -142,20 +176,6 @@ export function Contact() {
                     className={INPUT}
                     {...invalid('email')}
                   />
-                </Field>
-                <Field id="contact-company" label={fields.company} required error={errors.company}>
-                  <input
-                    id="contact-company"
-                    name="company"
-                    required
-                    autoComplete="organization"
-                    placeholder={fields.companyPlaceholder}
-                    className={INPUT}
-                    {...invalid('company')}
-                  />
-                </Field>
-                <Field id="contact-role" label={fields.role}>
-                  <input id="contact-role" name="role" autoComplete="organization-title" placeholder={fields.rolePlaceholder} className={INPUT} />
                 </Field>
                 <div className="md:col-span-2">
                   <Field id="contact-topic" label={fields.topic} required>
@@ -189,7 +209,7 @@ export function Contact() {
                       id="contact-message"
                       name="message"
                       required
-                      rows={5}
+                      rows={4}
                       placeholder={fields.messagePlaceholder}
                       className={`${INPUT} min-h-[9rem] resize-y`}
                       {...invalid('message')}
@@ -201,11 +221,18 @@ export function Contact() {
               <label className="mt-7 flex cursor-pointer items-start gap-3.5 text-[0.9375rem] text-mist">
                 <input type="checkbox" name="consent" defaultChecked className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-signal" />
                 <span>
-                  {contact.consent}{' '}
-                  <a href={site.privacyUrl} className="font-semibold text-paper underline underline-offset-4 hover:text-signal">
-                    {contact.privacyLabel}
-                  </a>
-                  .
+                  {contact.consent}
+                  {/* only once there is a privacy page to point to */}
+                  {site.privacyUrl && (
+                    <>
+                      {' '}
+                      {contact.privacyLead}{' '}
+                      <a href={site.privacyUrl} className="font-semibold text-paper underline underline-offset-4 hover:text-signal">
+                        {contact.privacyLabel}
+                      </a>
+                      .
+                    </>
+                  )}
                 </span>
               </label>
 
@@ -230,51 +257,28 @@ export function Contact() {
                 )}
               </p>
             </form>
-          </Emerge>
-
-          <Emerge className="over-field lg:col-span-5">
+          </div>
+          <div className="lg:col-span-4">
             <div className="border-t border-[var(--line-strong)] pt-6">
               <p className="text-[0.9375rem] text-haze">{contact.emailTitle}</p>
               <a
                 href={`mailto:${site.contactEmail}`}
-                className="mt-3 inline-block text-[clamp(1.75rem,2.8vw,2.5rem)] font-semibold tracking-tight break-all text-paper transition-colors duration-300 hover:text-signal"
+                className="mt-3 inline-block text-[1.25rem] font-semibold tracking-tight break-all text-paper transition-colors duration-300 hover:text-signal"
               >
                 {site.contactEmail}
               </a>
             </div>
-            <div className="mt-10 border-t border-[var(--line-strong)] pt-6">
+            <div className="mt-8 border-t border-[var(--line-strong)] pt-6">
               <p className="text-[0.9375rem] text-haze">{contact.locationsTitle}</p>
               <p className="mt-3 text-[1.1875rem] text-paper md:text-[1.25rem]">{contact.locations.join(' · ')}</p>
             </div>
-            <p className="mt-10 rounded-2xl bg-deep/45 p-6 text-[1rem] text-mist ring-1 ring-[var(--line)] backdrop-blur-md">
+            <p className="mt-8 rounded-2xl bg-deep/70 p-6 text-[1rem] text-mist ring-1 ring-[var(--line)]">
               {contact.partner.before} <strong className="font-semibold text-paper">{contact.partner.strong}</strong> {contact.partner.after}
             </p>
-          </Emerge>
+
+          </div>
         </div>
       </div>
-
-      <footer id={footer.id} className="relative mt-24 pt-6 pb-6 md:mt-32 md:pb-8">
-        <div className="relative flex flex-col gap-6 border-t border-[var(--line)] pt-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <Logo label="Applied AI" />
-            <p className="mt-4 text-[0.75rem] tracking-[0.1em] text-haze">{footer.note}</p>
-          </div>
-          <div className="flex flex-col gap-4 md:items-end">
-            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[0.875rem]">
-              {footer.links.map((l) => (
-                <li key={l.href}>
-                  <a href={l.href} className="nav-link text-mist hover:text-paper">
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p className="text-[0.75rem] text-haze">
-              © {YEAR} {footer.brand}
-            </p>
-          </div>
-        </div>
-      </footer>
-    </section>
+    </dialog>
   )
 }

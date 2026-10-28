@@ -9,12 +9,12 @@
   --color-mist: #9aa8c3;     /* secondary text */
   --color-haze: #8292b4;     /* tertiary text, captions (readable on ink: 6:1) */
   --color-signal: #34bde8;   /* brand cyan: engineering intelligence, focus, selection */
-  --color-amber: #f5b134;    /* brand amber: corporate intelligence (HR Central) */
+  --color-amber: #f5b134;    /* brand amber: enterprise intelligence (HR Central) */
   --color-pulse: #ed1b24;    /* brand red: used very sparingly */
   --color-orange: #ea7532;
   --color-green: #14a17e;
 
-  --font-display: 'Calistoga', Georgia, serif;
+  --font-display: 'Aileron', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Aileron', ui-sans-serif, system-ui, sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -53,12 +53,12 @@ body {
   outline-offset: 3px;
 }
 
-/* Display type: Calistoga carries the brand; set tight and large */
+/* Display type: the sans-serif in bold, set tight and large */
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.012em;
-  line-height: 1.02;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
   text-wrap: balance;
 }
 
@@ -148,9 +148,9 @@ body {
 /* The same move, driven by state instead of page load */
 .blur-swap {
   transition:
-    opacity 0.9s var(--ease-out-expo),
-    filter 0.9s var(--ease-out-expo),
-    transform 0.9s var(--ease-out-expo);
+    opacity 0.7s var(--ease-out-expo),
+    filter 0.7s var(--ease-out-expo),
+    transform 0.7s var(--ease-out-expo);
   opacity: 0;
   filter: blur(14px);
   transform: translateY(18px);
@@ -411,37 +411,6 @@ a:focus-visible .logo-3d-square {
   );
 }
 
-/* Scroll cue under the hero: a short line with a light travelling down it */
-.scroll-cue {
-  position: relative;
-  display: block;
-  width: 1px;
-  height: 36px;
-  overflow: hidden;
-  background: rgb(238 242 248 / 0.14);
-}
-
-.scroll-cue::after {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  top: -40%;
-  height: 40%;
-  background: linear-gradient(to bottom, transparent, var(--color-paper));
-  animation: scroll-cue 2.2s var(--ease-glide) infinite;
-}
-
-@keyframes scroll-cue {
-  to { top: 100%; }
-}
-
-/* Short screens: the hero column needs the room more than the cue does */
-@media (max-height: 760px) {
-  .scroll-cue {
-    display: none;
-  }
-}
-
 /* Big displays: let the whole type scale grow a step so text never looks lost */
 @media (min-width: 1680px) {
   html {
@@ -461,22 +430,13 @@ a:focus-visible .logo-3d-square {
   mask-composite: intersect;
 }
 
-/* ---------- The CAD console (Digital Design Agent) ---------- */
-/* a validation laser sweeps the assembled car once per cycle */
-.cad-scan-beam { animation: cad-sweep 8s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-@keyframes cad-sweep {
-  0%, 74% { transform: translateX(40px); opacity: 0; }
-  75% { transform: translateX(50px); opacity: 0.95; }
-  93% { transform: translateX(470px); opacity: 0.95; }
-  94%, 100% { transform: translateX(475px); opacity: 0; }
-}
-.cad-svg .explode-part { transition: opacity 0.4s var(--ease-glide); }
+/* the engineering stages' timer line */
+@keyframes stage-time { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 /* a live dot: a soft breath of light */
 .live-dot { animation: live-dot 2.4s var(--ease-glide) infinite; }
 @keyframes live-dot { 50% { opacity: 0.35; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .cad-scan-beam { animation: none !important; opacity: 0; }
   .live-dot { animation: none !important; }
 }

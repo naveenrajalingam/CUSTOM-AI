@@ -1,22 +1,20 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import Lenis from 'lenis'
-import Snap from 'lenis/snap'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Architecture } from './components/Architecture'
-import { BlueprintArt, NetworkArt } from './components/ChapterArt'
 import { Chapter } from './components/Chapter'
-import { Closing } from './components/Closing'
 import { Contact } from './components/Contact'
+import { CapabilityTabs } from './components/CapabilityTabs'
 import { Differentiator } from './components/Differentiator'
+import { Footer } from './components/Footer'
 import { EngineeringStages } from './components/EngineeringStages'
-import { Gallery } from './components/Gallery'
 import { Hero } from './components/Hero'
+import { SectionDivider, SectionGlow } from './components/SectionMarks'
 import { SignalCursor } from './components/SignalCursor'
 import { SiteNav } from './components/SiteNav'
-import { engineering, hr } from './content'
+import { contactHref, engineering, hr } from './content'
 import { prefersReducedMotion } from './lib/motion'
-import { glide, scrollToId, setScroller } from './lib/scroll'
+import { scrollToId, setScroller } from './lib/scroll'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -50,7 +48,8 @@ function useGlideLinks() {
 function useArrivalHash() {
   useEffect(() => {
     const id = decodeURIComponent(window.location.hash.slice(1))
-    if (!id) return
+    // #lets-talk opens the contact window instead (see Contact)
+    if (!id || `#${id}` === contactHref) return
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
     const go = () => {
       ScrollTrigger.refresh()
@@ -67,10 +66,26 @@ function useSmoothScroll() {
     const refresh = () => ScrollTrigger.refresh()
     window.addEventListener('load', refresh)
     document.fonts?.ready.then(refresh)
-    if (prefersReducedMotion()) return () => window.removeEventListener('load', refresh)
+    // and whenever the page's height changes, so no block is left waiting at a stale position
+    let lastHeight = 0
+    let timer = 0
+    const ro = new ResizeObserver(() => {
+      const h = document.body.scrollHeight
+      if (h === lastHeight) return
+      lastHeight = h
+      window.clearTimeout(timer)
+      timer = window.setTimeout(refresh, 150)
+    })
+    ro.observe(document.body)
+    const stopWatching = () => {
+      window.removeEventListener('load', refresh)
+      ro.disconnect()
+      window.clearTimeout(timer)
+    }
+    if (prefersReducedMotion()) return stopWatching
 
-    // a soft, weighted glide like a trackpad on a Mac
-    const lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.9, touchMultiplier: 1.4 })
+    // a light glide: smooth, but close behind the wheel so it never feels late
+    const lenis = new Lenis({ lerp: 0.14, wheelMultiplier: 1, touchMultiplier: 1.4 })
     setScroller(lenis)
     if (import.meta.env.DEV) Object.assign(window, { __lenis: lenis }) // for checking scenes by hand
     lenis.on('scroll', ScrollTrigger.update)
@@ -78,35 +93,9 @@ function useSmoothScroll() {
     gsap.ticker.add(tick)
     gsap.ticker.lagSmoothing(0)
 
-    // when you stop near a scene, the page settles onto it: each chapter opener
-    // fully open, each stage of the agent, each card of the film strip, the
-    // closing. Reading sections scroll freely.
-    const snap = new Snap(lenis, { type: 'proximity', distanceThreshold: '30%', duration: 1.1, easing: glide, debounce: 400 })
-    let removers: (() => void)[] = []
-    const placeSnaps = () => {
-      removers.forEach((remove) => remove())
-      const vh = window.innerHeight
-      const at = (el: HTMLElement | null, k = 0) =>
-        el ? el.getBoundingClientRect().top + window.scrollY + Math.max(0, el.offsetHeight - vh) * k : null
-      const points = [
-        0,
-        at(document.getElementById(engineering.id), 0.8),
-        at(document.getElementById(hr.id), 0.8),
-        ...[...document.querySelectorAll<HTMLElement>('[data-stops]')].flatMap((el) =>
-          (JSON.parse(el.dataset.stops ?? '[]') as number[]).map((k) => at(el, k)),
-        ),
-        document.documentElement.scrollHeight - vh,
-      ].filter((y): y is number => y !== null)
-      removers = points.map((y) => snap.add(Math.round(y)))
-    }
-    ScrollTrigger.addEventListener('refresh', placeSnaps)
-    placeSnaps()
-
     return () => {
       gsap.ticker.remove(tick)
-      window.removeEventListener('load', refresh)
-      ScrollTrigger.removeEventListener('refresh', placeSnaps)
-      snap.destroy()
+      stopWatching()
       setScroller(null)
       lenis.destroy()
     }
@@ -140,44 +129,33 @@ export default function App() {
       <div className="relative z-[1]">
         <Hero />
         <main>
-          <section aria-labelledby={`${engineering.id}-title`}>
-            <Chapter
-              id={engineering.id}
-              art={<BlueprintArt />}
-              focus={{ x: 0.62, y: 0.42 }}
-              tint={0.25}
-              tag={engineering.tag}
-              title={engineering.title}
-              lede={engineering.lede}
-              accent="signal"
-            />
-            <EngineeringStages />
-          </section>
-          <section aria-labelledby={`${hr.id}-title`}>
+          <SectionDivider color={1} />
+          <EngineeringStages />
+          <SectionDivider color={3} />
+          <section aria-labelledby={`${hr.id}-title`} className="relative">
+            <SectionGlow accent="amber" side="left" />
             <Chapter
               id={hr.id}
-              art={<NetworkArt />}
-              focus={{ x: 0.5, y: 0.5 }}
-              tint={0.25}
-              tag={hr.tag}
+              name={hr.name}
               title={hr.title}
               lede={hr.lede}
               accent="amber"
+              aside={<Differentiator />}
+              asideFirst
               note={
-                <span className="inline-flex items-center gap-2 rounded-full bg-deep/60 px-3.5 py-1.5 text-[0.875rem] text-mist ring-1 ring-[var(--line)] backdrop-blur-md">
+                <span className="inline-flex items-center gap-2 rounded-full bg-deep/80 px-3.5 py-1.5 text-[0.875rem] text-mist ring-1 ring-[var(--line)]">
                   <span aria-hidden="true" className="live-dot h-2 w-2 rounded-[2px] bg-amber" />
                   {hr.status}
                 </span>
               }
             />
-            <Gallery accent="amber" groups={hr.groups} />
-            <Differentiator />
+            <CapabilityTabs groups={hr.groups} />
           </section>
-          <Architecture />
         </main>
-        <Closing />
-        <Contact />
+        <Footer />
       </div>
+      {/* the "Let's talk" window, opened from any Let's talk link */}
+      <Contact />
     </div>
   )
 }
