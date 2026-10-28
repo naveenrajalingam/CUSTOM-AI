@@ -8,6 +8,7 @@ export default defineConfig({
         main: resolve(import.meta.dirname, 'index.html'),
         designA: resolve(import.meta.dirname, 'design-a/index.html'),
         designB: resolve(import.meta.dirname, 'design-b/index.html'),
+        hub: resolve(import.meta.dirname, 'hub.html'),
       },
     },
   },

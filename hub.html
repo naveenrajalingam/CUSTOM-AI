@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Applied AI — Prototype Directory Hub</title>
+  <meta name="description" content="Applied AI Prototypes: Explore three genuinely different website designs for engineering design automation and HR Central.">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
+
+    :root {
+      --sc-navy: #1C305C;
+      --sc-orange: #EA7532;
+      --sc-amber: #F5B134;
+      --sc-cyan: #34BDE8;
+      --sc-green: #14A17E;
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --font-tech: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --text-hero: clamp(2.1rem, 3.2vw + 0.2rem, 3rem);
+      --text-h2: clamp(1.6rem, 2.2vw, 2.2rem);
+      --text-body-lead: clamp(1rem, 0.4vw + 0.85rem, 1.15rem);
+      --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body.portal-body {
+      background: #080E1E;
+      color: #E2E8F0;
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body.portal-body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: 
+        radial-gradient(circle at 10% 10%, rgba(52, 189, 232, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(234, 117, 50, 0.08) 0%, transparent 45%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .portal-container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 5rem 5% 6rem;
+    }
+
+    .portal-header {
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto 4rem;
+    }
+
+    .portal-brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 1.5rem;
+    }
+
+    .portal-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(52, 189, 232, 0.12);
+      border: 1px solid rgba(52, 189, 232, 0.35);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--sc-cyan);
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .portal-title {
+      font-family: var(--font-tech);
+      font-size: var(--text-hero);
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      margin-bottom: 1.25rem;
+    }
+
+    .portal-title span {
+      background: linear-gradient(135deg, #FFFFFF 20%, #34BDE8 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .portal-desc {
+      font-size: var(--text-body-lead);
+      color: #94A3B8;
+      line-height: 1.65;
+    }
+
+    .prototypes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-bottom: 5rem;
+    }
+
+    .prototype-card {
+      background: rgba(13, 23, 46, 0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(52, 189, 232, 0.22);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.35s var(--ease-smooth);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+    }
+
+    .prototype-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--sc-cyan);
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(52, 189, 232, 0.25);
+    }
+
+    .card-img-wrap {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+      background: #0B1325;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s var(--ease-smooth);
+    }
+
+    .prototype-card:hover .card-img-wrap img {
+      transform: scale(1.05);
+    }
+
+    .card-tag-floating {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: rgba(8, 14, 30, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+    }
+
+    .card-body {
+      padding: 1.75rem 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-title {
+      font-family: var(--font-tech);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      font-size: 0.875rem;
+      color: #94A3B8;
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .trait-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 1.75rem;
+    }
+
+    .trait-pill {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #CBD5E1;
+    }
+
+    .card-launch-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--sc-navy), #0E1B38);
+      border: 1px solid rgba(52, 189, 232, 0.4);
+      color: #FFFFFF;
+      font-family: var(--font-tech);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.25s var(--ease-smooth);
+    }
+
+    .card-launch-btn:hover {
+      background: linear-gradient(135deg, var(--sc-orange), #C85415);
+      border-color: var(--sc-orange);
+      box-shadow: 0 0 16px rgba(234, 117, 50, 0.4);
+    }
+
+    .testing-guide-section {
+      background: rgba(13, 23, 46, 0.5);
+      border: 1px solid rgba(52, 189, 232, 0.2);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .guide-title {
+      font-family: var(--font-tech);
+      font-size: var(--text-h2);
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 0.75rem;
+    }
+
+    .guide-desc {
+      font-size: 0.95rem;
+      color: #94A3B8;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      max-width: 780px;
+    }
+
+    .devices-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+
+    .device-card {
+      background: rgba(8, 14, 30, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+
+    .device-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--sc-cyan);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .device-res {
+      font-family: var(--font-tech);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 0.35rem;
+    }
+
+    .device-detail {
+      font-size: 0.8rem;
+      color: #64748B;
+      line-height: 1.4;
+    }
+
+    .portal-footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #64748B;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 2rem;
+    }
+
+    @media (max-width: 1024px) {
+      .prototypes-grid {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        margin: 0 auto 4rem;
+      }
+      .devices-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .devices-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="portal-body">
+
+  <div class="portal-container">
+    <header class="portal-header">
+      <div class="portal-brand-row">
+        <div style="display:inline-flex; align-items:center; gap:10px; font-family:var(--font-tech); font-size:1.4rem; font-weight:800; color:#FFFFFF;">
+          <span style="display:inline-block; width:14px; height:14px; background:#EA7532; border-radius:3px;"></span>
+          <span>Custom AI</span>
+        </div>
+      </div>
+      <div class="portal-pill">Autonomous Problem Solving • 3 Independent Prototypes</div>
+      <h1 class="portal-title">
+        Applied AI Pillar — <span>3 Distinct Design Directions</span>
+      </h1>
+      <p class="portal-desc">
+        Each design is isolated in its own independent directory to prevent style collision. Explore all three genuine design directions for stakeholder review.
+      </p>
+    </header>
+
+    <div class="prototypes-grid">
+      <!-- Design A Card -->
+      <article class="prototype-card">
+        <div class="card-img-wrap">
+          <img src="assets/images/preview-website-a.jpg" alt="Design A Preview: Premium AI Innovation">
+          <div class="card-tag-floating">Design A • Dark AI</div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Premium AI Innovation</h2>
+          <p class="card-desc">
+            Dark navy backdrop with glowing telemetry, animated CAD hologram viewer, and high-impact futuristic typography.
+          </p>
+          <div class="trait-pills">
+            <span class="trait-pill">Dark Navy Theme</span>
+            <span class="trait-pill">Interactive Hologram</span>
+            <span class="trait-pill">Glow Accents</span>
+          </div>
+          <a href="./design-a/" class="card-launch-btn">
+            <span>Open Design A (design-a/)</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Design B Card -->
+      <article class="prototype-card">
+        <div class="card-img-wrap">
+          <img src="assets/images/preview-website-b.jpg" alt="Design B Preview: Corporate Enterprise">
+          <div class="card-tag-floating">Design B • Corporate</div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Corporate Enterprise</h2>
+          <p class="card-desc">
+            Clean white architectural grid with interactive engineering blueprints, compliance matrices, and structured ATS lifecycle tables.
+          </p>
+          <div class="trait-pills">
+            <span class="trait-pill">Clean Light Grid</span>
+            <span class="trait-pill">Interactive Blueprint</span>
+            <span class="trait-pill">Corporate Rigor</span>
+          </div>
+          <a href="./design-b/" class="card-launch-btn">
+            <span>Open Design B (design-b/)</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Testing & Folder Architecture Reference -->
+    <section class="testing-guide-section">
+      <h2 class="guide-title">Directory Architecture</h2>
+      <p class="guide-desc">
+        Each prototype has been completely isolated into its own folder. All HTML, styles, and scripts are self-contained without shared dependencies.
+      </p>
+      <div class="devices-grid">
+        <div class="device-card">
+          <div class="device-badge">DIR 01</div>
+          <div class="device-res">/design-a/</div>
+          <div class="device-detail">index.html, style.css, script.js</div>
+        </div>
+        <div class="device-card">
+          <div class="device-badge">DIR 02</div>
+          <div class="device-res">/design-b/</div>
+          <div class="device-detail">index.html, style.css, script.js</div>
+        </div>
+        <div class="device-card">
+          <div class="device-badge">STATUS</div>
+          <div class="device-res">Active Prototypes</div>
+          <div class="device-detail">Design A (Dark) &amp; Design B (Light)</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="portal-footer">
+      Applied AI Pillar • Enterprise Engineering Automation & HR Central
+    </footer>
+  </div>
+
+</body>
+</html>
