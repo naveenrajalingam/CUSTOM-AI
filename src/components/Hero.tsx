@@ -66,8 +66,8 @@ function Branches() {
 export function Hero() {
   return (
     <header id={hero.id} className="relative flex min-h-svh flex-col">
-      <div className="mx-auto grid w-full max-w-[1320px] flex-1 items-center gap-12 px-6 pt-28 pb-20 md:px-10 lg:grid-cols-12 lg:gap-10 lg:pt-20 lg:pb-16">
-        <div className="over-field lg:col-span-6">
+      <div className="mx-auto grid w-full max-w-[1320px] flex-1 items-center gap-12 px-6 pt-28 pb-20 md:px-10 min-[900px]:grid-cols-12 min-[900px]:gap-10 min-[900px]:pt-20 min-[900px]:pb-16">
+        <div className="over-field min-[900px]:col-span-6">
           <p className="anim-stagger flex items-center gap-3 text-[0.9375rem] text-mist" style={delay(0.25)}>
             <span aria-hidden="true" className="flex gap-1">
               {SQUARES.map((s) => (
@@ -93,7 +93,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="anim-fade hidden justify-center sm:flex lg:col-span-6 lg:justify-end" style={delay(0.9)} role="img" aria-label={hero.figureLabel}>
+        <div className="anim-fade hidden justify-center sm:flex min-[900px]:col-span-6 min-[900px]:justify-end" style={delay(0.9)} role="img" aria-label={hero.figureLabel}>
           <Branches />
         </div>
         {/* phones: the same three branches as a list, so the labels stay readable */}
