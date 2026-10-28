@@ -3,107 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SupplyChainz — Applied AI &amp; Digital Supply Chain</title>
-  <meta name="description" content="SupplyChainz Applied AI: Building AI That Moves Beyond Assistance — Toward Autonomous Problem Solving. Featuring Digital Design Agent and HR Central.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+  <title>Applied AI — AI that does the work</title>
+  <meta name="description" content="Applied AI Solutions: Building AI That Moves Beyond Assistance — Toward Autonomous Problem Solving. Featuring Digital Design Agent and HR Central.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- 3% Whole-Page Film Grain Texture Overlay (WCAG Measured) -->
-  <div class="grain-overlay" aria-hidden="true"></div>
-
-  <!-- Scroll Parallax Background Field: 40 Tiny Squares at 10-25% Opacity (No Idle Drift) -->
-  <div class="bg-parallax-squares" id="bg-parallax-squares" aria-hidden="true"></div>
 
   <!-- Interactive Ambient Cursor Spotlight Glow -->
   <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
   <!-- Dynamic Linear Grid Spotlight (Reveals Coordinate Grid Beneath Cursor) -->
   <div class="grid-spotlight-overlay" id="grid-spotlight-overlay" aria-hidden="true"></div>
 
-  <!-- 64px 3-Column Header (Transparent at top, Ink at 80% with blur on scroll) -->
+  <!-- Minimalist Header -->
   <header class="header-a">
     <div class="header-inner">
-      <!-- Column 1: 36px Layered Mark with White Frame & Wordmark -->
-      <a href="#hero" class="sc-brand-lockup" aria-label="SupplyChainz Applied AI Home">
-        <div class="sc-layered-mark-36" aria-hidden="true">
-          <span class="sq sq-orange"></span>
-          <span class="sq sq-cyan"></span>
-          <span class="sq sq-amber"></span>
-          <span class="sq sq-green"></span>
-        </div>
-        <div class="sc-brand-titles">
-          <span class="sc-wordmark">SupplyChainz</span>
-          <span class="sc-submark">Applied AI</span>
-        </div>
-      </a>
+      <div class="header-brand-group flex items-center gap-8">
+        <a href="#hero" class="brand-mark-a" aria-label="Applied AI Home">
+          <span class="kicker-sq"></span>
+          <span class="brand-text">Applied AI</span>
+        </a>
 
-      <!-- Column 2: Center Navigation Links at 14px -->
-      <nav class="nav-center-desktop flex items-center gap-1.5" aria-label="Primary Navigation">
-        <!-- 1. Corporate Intelligence -> HR Central -->
-        <div class="nav-dropdown" id="corp-intel-dropdown">
-          <button type="button" class="nav-dropdown-trigger text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer py-2 px-2.5 rounded-lg hover:bg-white/5" aria-expanded="false" aria-haspopup="true">
-            <span>Corporate Intelligence</span>
-            <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M6 9l6 6 6-6"/>
-            </svg>
-          </button>
-          <div class="nav-dropdown-menu rounded-2xl bg-[#162036]/95 border border-slate-700/60 p-2.5 shadow-2xl backdrop-blur-xl min-w-[270px] flex flex-col gap-1" role="menu">
-            <a href="#hr-central" class="nav-dropdown-item group" role="menuitem">
-              <div class="flex items-center justify-between">
-                <div class="nav-dropdown-item-title text-sm font-semibold text-slate-100 group-hover:text-cyan-400 transition-colors">HR Central</div>
-                <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Active</span>
-              </div>
-              <div class="nav-dropdown-item-subtext text-xs text-slate-400 mt-0.5">AI-native talent lifecycle platform</div>
-            </a>
-          </div>
-        </div>
-
-        <!-- 2. Engineering Intelligence -> Digital Design Agent -->
-        <div class="nav-dropdown" id="eng-intel-dropdown">
-          <button type="button" class="nav-dropdown-trigger text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer py-2 px-2.5 rounded-lg hover:bg-white/5" aria-expanded="false" aria-haspopup="true">
-            <span>Engineering Intelligence</span>
-            <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M6 9l6 6 6-6"/>
-            </svg>
-          </button>
-          <div class="nav-dropdown-menu rounded-2xl bg-[#162036]/95 border border-slate-700/60 p-2.5 shadow-2xl backdrop-blur-xl min-w-[280px] flex flex-col gap-1" role="menu">
-            <a href="#digital-design-agent" class="nav-dropdown-item group" role="menuitem">
-              <div class="flex items-center justify-between">
-                <div class="nav-dropdown-item-title text-sm font-semibold text-slate-100 group-hover:text-orange-400 transition-colors">Digital Design Agent</div>
-                <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">Active</span>
-              </div>
-              <div class="nav-dropdown-item-subtext text-xs text-slate-400 mt-0.5">Autonomous engineering &amp; CAD automation</div>
-            </a>
-          </div>
-        </div>
-
-        <!-- 3. Medical Intelligence -> Added Later (In R&D / Planned) -->
-        <div class="nav-dropdown" id="med-intel-dropdown">
-          <button type="button" class="nav-dropdown-trigger text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer py-2 px-2.5 rounded-lg hover:bg-white/5" aria-expanded="false" aria-haspopup="true">
-            <span>Medical Intelligence</span>
-            <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M6 9l6 6 6-6"/>
-            </svg>
-          </button>
-          <div class="nav-dropdown-menu rounded-2xl bg-[#162036]/95 border border-slate-700/60 p-2.5 shadow-2xl backdrop-blur-xl min-w-[270px] flex flex-col gap-1" role="menu">
-            <div class="nav-dropdown-item opacity-85 cursor-default select-none p-2 rounded-xl bg-white/[0.03]">
-              <div class="flex items-center justify-between">
-                <div class="nav-dropdown-item-title text-sm font-semibold text-slate-200">Clinical &amp; Health AI</div>
-                <span class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Planned</span>
-              </div>
-              <div class="nav-dropdown-item-subtext text-xs text-slate-400 mt-0.5">Domain intelligence pipeline in development</div>
+        <!-- Desktop Navigation: Intelligence Pillars (Corporate, Engineering, Medical) -->
+        <nav class="nav-desktop flex items-center gap-1.5" aria-label="Primary Navigation">
+          <!-- 1. Corporate Intelligence -> HR Central -->
+          <div class="nav-dropdown" id="corp-intel-dropdown">
+            <button type="button" class="nav-dropdown-trigger text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer py-2 px-2.5 rounded-lg hover:bg-white/5" aria-expanded="false" aria-haspopup="true">
+              <span>Corporate Intelligence</span>
+              <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="nav-dropdown-menu rounded-2xl bg-[#162036]/95 border border-slate-700/60 p-2.5 shadow-2xl backdrop-blur-xl min-w-[270px] flex flex-col gap-1" role="menu">
+              <a href="#hr-central" class="nav-dropdown-item group" role="menuitem">
+                <div class="flex items-center justify-between">
+                  <div class="nav-dropdown-item-title text-sm font-semibold text-slate-100 group-hover:text-cyan-400 transition-colors">HR Central</div>
+                  <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Active</span>
+                </div>
+                <div class="nav-dropdown-item-subtext text-xs text-slate-400 mt-0.5">AI-native talent lifecycle platform</div>
+              </a>
             </div>
           </div>
-        </div>
-      </nav>
 
-      <!-- Column 3: Small CTA on the Right (8px Cut Corner) + Mobile Hamburger -->
-      <div class="header-right-col">
-        <button type="button" class="header-cta-btn cut-corner-8 cursor-pointer border-0" data-open-modal="lets-talk-modal" aria-haspopup="dialog">Talk to team</button>
+          <!-- 2. Engineering Intelligence -> Digital Design Agent -->
+          <div class="nav-dropdown" id="eng-intel-dropdown">
+            <button type="button" class="nav-dropdown-trigger text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer py-2 px-2.5 rounded-lg hover:bg-white/5" aria-expanded="false" aria-haspopup="true">
+              <span>Engineering Intelligence</span>
+              <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="nav-dropdown-menu rounded-2xl bg-[#162036]/95 border border-slate-700/60 p-2.5 shadow-2xl backdrop-blur-xl min-w-[280px] flex flex-col gap-1" role="menu">
+              <a href="#digital-design-agent" class="nav-dropdown-item group" role="menuitem">
+                <div class="flex items-center justify-between">
+                  <div class="nav-dropdown-item-title text-sm font-semibold text-slate-100 group-hover:text-orange-400 transition-colors">Digital Design Agent</div>
+                  <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">Active</span>
+                </div>
+                <div class="nav-dropdown-item-subtext text-xs text-slate-400 mt-0.5">Autonomous engineering &amp; CAD automation</div>
+              </a>
+            </div>
+          </div>
+
+          <!-- 3. Medical Intelligence -> Added Later (In R&D / Planned) -->
+          <div class="nav-dropdown" id="med-intel-dropdown">
+            <button type="button" class="nav-dropdown-trigger text-sm font-medium text-slate-300 hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer py-2 px-2.5 rounded-lg hover:bg-white/5" aria-expanded="false" aria-haspopup="true">
+              <span>Medical Intelligence</span>
+              <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="nav-dropdown-menu rounded-2xl bg-[#162036]/95 border border-slate-700/60 p-2.5 shadow-2xl backdrop-blur-xl min-w-[270px] flex flex-col gap-1" role="menu">
+              <div class="nav-dropdown-item opacity-85 cursor-default select-none p-2 rounded-xl bg-white/[0.03]">
+                <div class="flex items-center justify-between">
+                  <div class="nav-dropdown-item-title text-sm font-semibold text-slate-200">Clinical &amp; Health AI</div>
+                  <span class="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Planned</span>
+                </div>
+                <div class="nav-dropdown-item-subtext text-xs text-slate-400 mt-0.5">Domain intelligence pipeline in development</div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Header Actions: Mobile Hamburger Only (Action CTA button completely removed) -->
+      <div class="header-actions">
         <!-- Mobile Hamburger Toggle -->
         <button class="mobile-toggle-btn" aria-label="Toggle mobile menu" aria-expanded="false">
           <span class="hamburger-line"></span>
