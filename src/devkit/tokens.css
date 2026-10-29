@@ -1,0 +1,114 @@
+/* ==========================================================================
+   SupplyChainz Worlds: design tokens (plain CSS custom properties)
+   Framework-agnostic. Tailwind v4 projects use tailwind-theme.css instead
+   (same values, exposed as utilities). Values are the single source of truth;
+   tokens.json mirrors them for design tools and other stacks.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ---- Night: the canvas every world is built on ---------------------- */
+  --color-ink: #081128;   /* page background: brand navy taken deep */
+  --color-deep: #0d1a3a;  /* raised surfaces, glass tint */
+  --color-navy: #1c305c;  /* brand navy: gradients, image grading, plinths */
+
+  /* ---- Light: text and lines ------------------------------------------ */
+  --color-paper: #eef2f8; /* primary text, solid buttons       16.7:1 on ink */
+  --color-mist: #9aa8c3;  /* secondary text, ledes, nav idle    7.8:1 on ink */
+  --color-haze: #8292b4;  /* captions, meta, footnotes          6.0:1 on ink */
+
+  /* ---- Brand squares: the five colours of the SupplyChainz mark ------- */
+  --color-cyan: #34bde8;   /* 8.6:1 on ink */
+  --color-amber: #f5b134;  /* 10.0:1 on ink */
+  --color-orange: #ea7532; /* 6.3:1 on ink */
+  --color-green: #14a17e;  /* 5.7:1 on ink */
+  --color-red: #ed1b24;    /* 4.3:1 on ink: large text and shapes only. Reserved, see docs/02 */
+
+  /* ---- Lines: hairlines, never borders that shout --------------------- */
+  --line: rgb(238 242 248 / 0.09);
+  --line-strong: rgb(238 242 248 / 0.18);
+
+  /* ---- World accents (set per world, see [data-world] below) ---------- */
+  --accent: var(--color-cyan);       /* the world's lead colour */
+  --accent-2: var(--color-amber);    /* its second voice, for a second thread */
+
+  /* ---- Type ------------------------------------------------------------ */
+  --font-display: 'Calistoga', Georgia, serif;
+  --font-sans: 'Aileron', ui-sans-serif, system-ui, sans-serif;
+
+  --text-body: 1.0625rem;          /* 17px */
+  --text-lede: 1.25rem;            /* 20px (1.125rem below md) */
+  --text-small: 0.9375rem;         /* 15px: labels, tags, buttons */
+  --text-meta: 0.8125rem;          /* 13px: indices, eyebrow caps */
+  --text-micro: 0.75rem;           /* 12px: legal lines only */
+  --text-card-title: clamp(1.75rem, 2.6vw, 2.5rem);
+  --text-section: clamp(2.5rem, 5vw, 4.5rem);
+  --text-opener: clamp(2.6rem, 7vw, 6.5rem);
+  --text-statement: clamp(3.5rem, 9vw, 8rem);
+
+  --leading-body: 1.6;
+  --leading-display: 1.02;
+  --tracking-display: -0.012em;
+  --tracking-eyebrow: 0.14em;
+  --measure: 34rem;                /* reading width for any paragraph */
+
+  /* ---- Layout ---------------------------------------------------------- */
+  --page-max: 1320px;
+  --gutter: 1.5rem;                /* 24px; 2.5rem (40px) from 768px */
+  --nav-height: 4rem;
+
+  /* ---- Shape ----------------------------------------------------------- */
+  --cut: 12px;                     /* chamfer for buttons and badges */
+  --cut-sm: 8px;
+  --radius-field: 0.75rem;         /* inputs */
+  --radius-note: 1rem;             /* small glass notes */
+  --radius-panel: 1.5rem;          /* glass panels and cards */
+  --radius-swatch: 2px;            /* the little brand-square swatches */
+
+  /* ---- Glass ----------------------------------------------------------- */
+  --glass-bg: rgb(13 26 58 / 0.55);        /* deep @ 55% */
+  --glass-bg-strong: rgb(13 26 58 / 0.7);
+  --glass-blur: 24px;                      /* backdrop-blur-xl */
+  --glass-ring: inset 0 0 0 1px var(--line);
+  --glass-edge-light: linear-gradient(to right, transparent, rgb(238 242 248 / 0.25), transparent);
+  --shadow-lift: 0 30px 80px -30px rgb(0 0 0 / 0.7);
+  --halo-text: 0 1px 2px rgb(8 17 40 / 0.6), 0 4px 28px rgb(8 17 40 / 0.85);
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --ease-glide: cubic-bezier(0.22, 1, 0.36, 1);   /* default: long, soft landing */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);     /* entrances on load */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* small physical things: a little overshoot */
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);   /* loops that return to rest */
+
+  --dur-press: 120ms;    /* :active */
+  --dur-quick: 250ms;    /* fills, colour on small things */
+  --dur-hover: 400ms;    /* hover colour, lift */
+  --dur-settle: 700ms;   /* nav glass, card lift, focus changes */
+  --dur-arrive: 900ms;   /* state-driven entrances */
+  --dur-scene: 1250ms;   /* one hero entrance per page */
+
+  --stagger: 80ms;       /* between siblings arriving together */
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: 2.5rem; }
+}
+
+/* Big displays: the whole type scale grows a step so text never looks lost */
+@media (min-width: 1680px) {
+  html { font-size: 106.25%; }
+}
+
+/* ---- World accent presets ----------------------------------------------
+   Put data-world on <html> (or any section). Each world leads with a
+   different brand square so the four read as siblings, not copies.
+   !! PROPOSALS ONLY, NOT APPROVED !!
+   Except deep-tech (live), these pairings are suggestions. Ask the client /
+   brand owner to confirm each world's accents BEFORE building with them,
+   then edit the values here (and in tokens.json). Fixed rules: no two
+   worlds share a lead, and red is never a lead accent. */
+[data-world='deep-tech']               { --accent: var(--color-cyan);   --accent-2: var(--color-amber); }  /* confirmed for the Applied AI site */
+[data-world='ai-iot']                  { --accent: var(--color-green);  --accent-2: var(--color-cyan); }
+[data-world='digital-supply-chain']    { --accent: var(--color-orange); --accent-2: var(--color-amber); }
+[data-world='custom']                  { --accent: var(--color-amber);  --accent-2: var(--color-green); }

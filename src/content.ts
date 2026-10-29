@@ -11,85 +11,62 @@ export const site = {
 /** Where every "let's talk" button goes: the contact form near the end of the page. */
 export const contactHref = '#lets-talk'
 
-/** The nav: one menu per intelligence area, each opening onto its products. Medical has none yet. */
-export const nav: { label: string; color: string; items: { href: string; label: string; note: string; status: string }[] }[] = [
+/**
+ * The nav: one menu per intelligence area, each opening onto its products, the
+ * products of each intelligence area. A product without a
+ * section on this page yet has no `href` and shows as coming soon.
+ */
+export const nav: { label: string; color: string; items: { href?: string; label: string; status: string }[] }[] = [
   {
-    label: 'Engineering Intelligence',
+    label: 'Manufacturing Intelligence',
     color: '#34bde8',
-    items: [{ href: '#digital-design-agent', label: 'Digital Design Agent', note: 'Autonomous engineering & CAD automation', status: 'Active' }],
+    items: [{ href: '#digital-design-agent', label: 'Design & Analysis', status: 'Active' }],
   },
   {
     label: 'Enterprise Intelligence',
     color: '#f5b134',
-    items: [{ href: '#hr-central', label: 'HR Central', note: 'AI-native talent lifecycle platform', status: 'Active' }],
+    items: [
+      { href: '#hr-central', label: 'HR Central', status: 'Active' },
+      { href: '#training-ld', label: 'Training and L&D', status: 'In development' },
+      { href: '#marketing-intelligence', label: 'Marketing Intelligence', status: 'In development' },
+    ],
   },
-  { label: 'Medical Intelligence', color: '#14a17e', items: [] },
+  {
+    label: 'Medical Intelligence',
+    color: '#14a17e',
+    items: [{ label: 'Clinical Suite', status: 'Coming soon' }],
+  },
 ]
 
 export const hero = {
   id: 'hero',
-  tag: 'Applied AI // Agentic architecture',
+  tag: 'Applied AI',
   title: ['AI that does', 'the work.'],
-  lede: 'Most AI answers questions. Ours learns a domain, takes on its workflows, and progressively does more of the real work.',
-  core: 'Applied AI',
-  figureLabel:
-    'Applied AI at the centre of three intelligence branches: Enterprise Intelligence, Engineering Intelligence, and Medical Intelligence (planned).',
+  lede: 'Building AI that moves beyond assistance — toward autonomous problem solving.',
 }
-
-/** The three intelligence pillars, as drawn in the hero and listed in the menu. */
-export const pillars = [
-  {
-    name: 'Enterprise Intelligence',
-    focus: 'Enterprise • Talent Mesh',
-    product: 'HR Central',
-    note: 'AI-native talent lifecycle platform',
-    status: 'Active',
-    href: '#hr-central',
-    color: '#f5b134',
-  },
-  {
-    name: 'Engineering Intelligence',
-    focus: 'CAD • FEA Physics',
-    product: 'Digital Design Agent',
-    note: 'Autonomous engineering & CAD automation',
-    status: 'Active',
-    href: '#digital-design-agent',
-    color: '#34bde8',
-  },
-  {
-    name: 'Medical Intelligence',
-    focus: 'Clinical & Diagnostic AI',
-    product: 'Clinical & Health AI',
-    note: 'Domain intelligence pipeline in development',
-    status: 'Planned',
-    href: null,
-    color: '#14a17e',
-  },
-] as const
 
 export const engineering = {
   id: 'digital-design-agent',
-  name: 'Digital Design Agent',
-  title: 'From design automation to autonomous engineering.',
-  lede: 'An AI agent that takes an engineering problem all the way to a production-ready design.',
-  stagesLabel: 'Engineering evolution stages',
+  name: 'AI Digital Design',
+  title: 'Autonomous engineering design, accelerated by AI.',
+  lede: 'Engineers focus on design. The AI handles the operations.',
+  /** the operations in that line, as the icon row under it (each shown on hover) */
+  steps: [
+    { name: 'Design', copy: 'Point at the model and describe the change in plain English, or say it out loud.' },
+    { name: 'Measure', copy: 'The finished part is measured to confirm it matches what was asked for.' },
+    { name: 'Analyse', copy: 'Tests each candidate dimension, even across linked parts, to find the one that really moves.' },
+    { name: 'Fix', copy: 'Nothing changes until the engineer approves, and a change that fails is undone automatically.' },
+    { name: 'Redesign', copy: 'Reads geometry, loads and constraints, then ranks the design changes that reach the fix.' },
+  ],
+  // the console's header line, one per stage the console plays through
   stages: [
     {
-      tab: 'Execute',
-      title: 'Digital Design Agent',
-      copy: 'Carries out design work from your engineering instructions.',
       cadMode: 'SYS.ENG_CAD // AUTONOMOUS_ASSEMBLY',
     },
     {
-      tab: 'Augment',
-      title: 'Engineering Knowledge Layer',
-      copy: 'Learns your standards, simulation rules and governance.',
       cadMode: 'SYS.ENG_CAD // KNOWLEDGE_LAYER',
     },
     {
-      tab: 'Design',
-      title: 'Autonomous Engineering',
-      copy: 'Proposes the solution, then designs it once you approve.',
       cadMode: 'SYS.ENG_CAD // AUTONOMOUS_ENGINEERING',
     },
   ],
@@ -107,90 +84,86 @@ export const engineering = {
   },
 }
 
-export type Capability = { title: string; body: string; tags: [string, string]; art: ArtId }
-export type ArtId =
-  | 'profile'
-  | 'upskill'
-  | 'assess'
-  | 'interview'
-  | 'pipeline'
-  | 'verify'
-  | 'hrms'
-  | 'lifecycle'
-
 export const hr = {
   id: 'hr-central',
   name: 'HR Central',
   title: 'One AI-native platform for the entire talent lifecycle.',
-  lede: 'One agentic platform for candidates and employers alike.',
   status: 'Platform being developed',
-  groups: [
-    {
-      title: 'Campus → Career',
-      caption: 'Candidate Readiness',
-      items: [
-        {
-          title: 'Resume & Profile Builder',
-          body: 'AI-assisted profile generation and skills taxonomy mapping for target roles.',
-          tags: ['Skills Taxonomy', 'Target Role Matching'],
-          art: 'profile',
-        },
-        {
-          title: 'Adaptive Upskilling',
-          body: 'Personalized learning roadmaps that adapt dynamically to verified competency gaps.',
-          tags: ['Competency Gaps', 'Verified Roadmaps'],
-          art: 'upskill',
-        },
-        {
-          title: 'Proctored Assessments',
-          body: 'Automated, integrity-verified evaluation pipelines for engineering talent.',
-          tags: ['Integrity Verification', 'Engineering Evaluation'],
-          art: 'assess',
-        },
-        {
-          title: 'AI Mock Interviews',
-          body: 'Role-specific conversational AI agents conducting dynamic candidate practice interviews.',
-          tags: ['Role-Specific Practice', 'Conversational Feedback'],
-          art: 'interview',
-        },
-      ] as Capability[],
-    },
-    {
-      title: 'Hire → Retire',
-      caption: 'Enterprise Lifecycle',
-      items: [
-        {
-          title: 'Recruitment & Pipeline',
-          body: 'High-velocity candidate screening, interview orchestration, and applicant triage.',
-          tags: ['Autonomous Triage', 'Interview Orchestration'],
-          art: 'pipeline',
-        },
-        {
-          title: 'Automated Verification',
-          body: 'Rapid background verification, digital credential validation, and identity compliance.',
-          tags: ['Digital Credential Hash', 'Identity Compliance'],
-          art: 'verify',
-        },
-        {
-          title: 'Intelligent HRMS',
-          body: 'Paperless employee induction, role configuration, and modern core HR workflows.',
-          tags: ['Paperless Induction', 'Dynamic Roles'],
-          art: 'hrms',
-        },
-        {
-          title: 'Lifecycle & Appraisals',
-          body: 'Continuous feedback loops, growth milestones, appraisals, and structured offboarding.',
-          tags: ['Real-Time Feedback', 'Growth Milestones'],
-          art: 'lifecycle',
-        },
-      ] as Capability[],
-    },
-  ],
   differentiator: {
     tag: 'The differentiator',
     quote:
       'A platform that adapts to the person, the employer and the workflow — not a rigid HR system they must adapt to.',
   },
+}
+
+export const training = {
+  id: 'training-ld',
+  name: 'Training and L&D',
+  title: 'Training for software the web has never seen.',
+  status: 'Module being developed',
+  overview: 'The Observer Engine watches your teams work in platforms like Kinaxis and turns it into a living knowledge base.',
+  console: 'SYS.L&D // OBSERVER_ENGINE',
+  /** the observed session the visual plays: each step the engine captures, and where in the window it happens */
+  session: {
+    app: 'Supply planning workspace',
+    /** the console's status, per stage of the icon row */
+    modes: ['Observing', 'Capturing', 'Parsing', 'Synthesizing'],
+    watching: 'Watching the session',
+    kbLabel: 'Knowledge base',
+    steps: [
+      { kind: 'Workflow', text: 'Open the monthly supply plan' },
+      { kind: 'Workflow', text: 'Adjust the demand forecast' },
+      { kind: 'Workflow', text: 'Run a what-if scenario' },
+      { kind: 'Document', text: 'Parse the S&OP procedure (SOP.pdf)' },
+    ],
+    lesson: 'Lesson ready: Monthly S&OP walkthrough',
+  },
+  figureLabel:
+    'The Observer Engine watching a planner in a supply planning workspace: each action it sees, and an internal procedure it reads, is captured as a step in a knowledge base, which becomes a ready-made lesson.',
+  capabilities: [
+    { name: 'Observe', title: 'Learns from real use', copy: 'Watches how experienced users work in the system, with no tutorials needed.' },
+    { name: 'Capture', title: 'Workflows, step by step', copy: 'Records each workflow end to end, as the steps your team actually takes.' },
+    { name: 'Parse', title: 'Reads your documentation', copy: 'Pulls procedures, guides and internal notes into the same picture.' },
+    { name: 'Synthesize', title: 'A living knowledge base', copy: 'Turns it all into lessons that update as your workflows change.' },
+  ],
+}
+
+export const marketing = {
+  id: 'marketing-intelligence',
+  name: 'Marketing Intelligence',
+  title: 'Market signals, turned into growth strategy.',
+  status: 'Module being developed',
+  overview: 'The central nervous system for your growth strategy.',
+  console: 'SYS.MKT_INTEL // SIGNAL_SYNTHESIS',
+  /** the field's status, per stage of the icon row */
+  modes: ['Ingesting', 'Analyzing', 'Synthesizing'],
+  /** the name over the lens that sorts the signals */
+  lensLabel: 'MI ENGINE',
+  /** what the lens notices while analyzing, one at a time */
+  insights: ['Trend detected', 'Sentiment shifting', 'Competitor move'],
+  /** the field's sources; pointing at one shows what it draws on */
+  sources: [
+    { name: 'Web', examples: ['News & industry media', 'Competitor websites', 'Search trends', 'Reviews & forums'] },
+    { name: 'Social platforms', examples: ['LinkedIn', 'X (Twitter)', 'YouTube', 'Reddit & communities'] },
+    { name: 'Internal data', examples: ['CRM & sales pipeline', 'Website analytics', 'Campaign results', 'Product usage'] },
+  ],
+  outputs: ['Market trends', 'Demand forecasts', 'Next best actions'],
+  figureLabel:
+    'Unordered signals from the web, social platforms and internal data drift in from the left, pass through the intelligence engine, and leave as three ordered streams: market trends, demand forecasts and next best actions.',
+  capabilities: [
+    {
+      name: 'Ingest',
+      copy: 'Web, social and internal data arrive continuously in one place, ready to analyse.',
+    },
+    {
+      name: 'Analyze',
+      copy: 'AI reads trends, sentiment and competitor moves as they emerge and filters out the noise.',
+    },
+    {
+      name: 'Synthesize',
+      copy: 'Predictions and clear recommendations your growth and strategy teams can use straight away.',
+    },
+  ],
 }
 
 export const contact = {
@@ -214,6 +187,8 @@ export const contact = {
     { value: 'Custom AI', label: 'Custom AI' },
     { value: 'Digital Design Agent', label: 'Digital Design Agent (CAD & FEA Automation)' },
     { value: 'HR Central', label: 'HR Central (AI-Native Talent Platform)' },
+    { value: 'Training and L&D', label: 'Training and L&D (Observer Engine)' },
+    { value: 'Marketing Intelligence', label: 'Marketing Intelligence' },
     { value: 'Partnership', label: 'Partnership' },
     { value: 'General Inquiry', label: 'General Inquiry' },
   ],
@@ -245,6 +220,8 @@ export const footer = {
       links: [
         { href: '#digital-design-agent', label: 'Digital Design Agent' },
         { href: '#hr-central', label: 'HR Central' },
+        { href: '#training-ld', label: 'Training and L&D' },
+        { href: '#marketing-intelligence', label: 'Marketing Intelligence' },
         { href: 'https://hrcentral.in', label: 'hrcentral.in', external: true },
       ],
     },

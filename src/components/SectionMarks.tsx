@@ -5,7 +5,7 @@ import { SQUARES } from '../brand/mark'
 // mark's squares at its centre.
 
 const WASH = {
-  signal: 'rgb(52 189 232 / 0.16)',
+  cyan: 'rgb(52 189 232 / 0.16)',
   amber: 'rgb(245 177 52 / 0.14)',
 }
 

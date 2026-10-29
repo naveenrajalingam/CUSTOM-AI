@@ -82,7 +82,7 @@ export function Logo({ className = '', label, interactive = false }: Props) {
     >
       {mark}
       <span className="flex flex-col leading-none">
-        <span className="font-display text-[1.0625rem] font-bold tracking-[-0.02em] text-paper">SupplyChainz</span>
+        <span className="font-display text-[1.0625rem] tracking-[-0.01em] text-paper">SupplyChainz</span>
         {label && <span className="mt-1 text-[0.8125rem] text-mist">{label}</span>}
       </span>
     </span>

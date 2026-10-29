@@ -21,26 +21,39 @@ export function SiteNav() {
 
   useEffect(() => {
     let raf = 0
+    // measured when the page changes size, never inside the scroll frame
+    let max = 0
+    const measure = () => {
+      max = document.documentElement.scrollHeight - window.innerHeight
+    }
+    measure()
+    const pageSize = new ResizeObserver(measure)
+    pageSize.observe(document.body)
+    // each area's product sections, found once
+    const areas = nav.map((group) => ({
+      label: group.label,
+      sections: group.items.flatMap((item) => {
+        const el = item.href ? document.getElementById(item.href.slice(1)) : null
+        return el ? [el.closest('section') ?? el] : []
+      }),
+    }))
+
     const onScroll = () => {
       cancelAnimationFrame(raf)
       raf = requestAnimationFrame(() => {
-        const max = document.documentElement.scrollHeight - window.innerHeight
-        const p = max > 0 ? window.scrollY / max : 0
-        if (barRef.current) barRef.current.style.transform = `scaleX(${p})`
-        setSolid(window.scrollY > 24)
-
-        // the area whose product section covers the middle of the screen
+        // reads first: where the page is, and which area's section covers the middle of the screen
+        const y = window.scrollY
         const mid = window.innerHeight / 2
         let active = ''
-        for (const group of nav) {
-          for (const item of group.items) {
-            const el = document.getElementById(item.href.slice(1))
-            if (!el) continue
-            const section = el.closest('section') ?? el
+        for (const area of areas) {
+          for (const section of area.sections) {
             const r = section.getBoundingClientRect()
-            if (r.top <= mid && r.bottom >= mid) active = group.label
+            if (r.top <= mid && r.bottom >= mid) active = area.label
           }
         }
+        // then the writes
+        if (barRef.current) barRef.current.style.transform = `scaleX(${max > 0 ? y / max : 0})`
+        setSolid(y > 24)
         setCurrent(active)
       })
     }
@@ -48,6 +61,7 @@ export function SiteNav() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => {
       cancelAnimationFrame(raf)
+      pageSize.disconnect()
       window.removeEventListener('scroll', onScroll)
     }
   }, [])
@@ -68,7 +82,7 @@ export function SiteNav() {
       aria-label="Primary"
       className={`fixed inset-x-0 top-0 z-40 transition-[background-color,backdrop-filter,box-shadow] duration-700 ease-[var(--ease-glide)] ${
         solid || open
-          ? 'bg-ink/55 shadow-[0_1px_0_rgb(238_242_248/0.06)] backdrop-blur-xl backdrop-saturate-150'
+          ? 'bg-ink/70 shadow-[0_1px_0_rgb(238_242_248/0.06)] backdrop-blur-md'
           : 'bg-transparent'
       }`}
     >
@@ -121,22 +135,32 @@ export function SiteNav() {
                 <span aria-hidden="true" className="h-2 w-2 rounded-[2px]" style={{ background: group.color }} />
                 {group.label}
               </p>
-              {group.items.map((item) => (
-                <a key={item.href} href={item.href} onClick={() => setOpen(false)} className="mt-2 block">
-                  <span className="flex items-center justify-between text-[1.0625rem] font-semibold text-paper">
-                    {item.label}
-                    <span className="text-[0.75rem] font-normal text-mist">{item.status}</span>
-                  </span>
-                  <span className="block text-[0.9375rem] text-mist">{item.note}</span>
-                </a>
-              ))}
+              {group.items.map((item) => {
+                const body = (
+                  <>
+                    <span className={`flex items-center justify-between text-[1.0625rem] font-semibold ${item.href ? 'text-paper' : 'text-mist'}`}>
+                      {item.label}
+                      <span className="text-[0.75rem] font-normal text-mist">{item.status}</span>
+                    </span>
+                  </>
+                )
+                return item.href ? (
+                  <a key={item.label} href={item.href} onClick={() => setOpen(false)} className="mt-2 block">
+                    {body}
+                  </a>
+                ) : (
+                  <div key={item.label} className="mt-2 block">
+                    {body}
+                  </div>
+                )
+              })}
             </li>
           ))}
         </ul>
       </div>
 
       <div className="h-px">
-        <div ref={barRef} className="h-px origin-left scale-x-0 bg-signal/80" />
+        <div ref={barRef} className="h-px origin-left scale-x-0 bg-cyan/80" />
       </div>
     </nav>
   )

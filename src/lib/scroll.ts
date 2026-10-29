@@ -30,16 +30,33 @@ export function scrollToY(target: number) {
   }
 }
 
-/** Where to land inside an element's scroll length: 0 = its top, 1 = its last screen. */
+/** The room the fixed nav takes at the top of the window. */
+const NAV = 64
+
+/**
+ * Where to land on an element: a plain section lands with its top just below
+ * the nav; a pinned chapter (land > 0) lands inside its scroll length, where
+ * 1 = its last screen.
+ */
 export function landingY(el: HTMLElement, land: number) {
   const top = el.getBoundingClientRect().top + window.scrollY
-  return top + Math.max(0, el.offsetHeight - window.innerHeight) * land
+  return land ? top + Math.max(0, el.offsetHeight - window.innerHeight) * land : Math.max(0, top - NAV)
 }
 
 /**
  * Glide to a section. Elements may set data-land (0–1): where inside their
  * scroll length to land, so a chapter opener arrives already open.
  */
+/** Put a section in view at once, without gliding: for opening the page at a #link. */
+export function jumpToId(id: string) {
+  const el = document.getElementById(id)
+  if (!el) return false
+  const y = landingY(el, Number(el.dataset.land ?? 0))
+  if (instance) instance.scrollTo(y, { immediate: true, force: true })
+  else window.scrollTo(0, y)
+  return true
+}
+
 export function scrollToId(id: string) {
   const el = document.getElementById(id)
   if (!el) return false

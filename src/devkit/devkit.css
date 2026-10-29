@@ -1,0 +1,457 @@
+/* ==========================================================================
+   SupplyChainz Worlds: base styles and utilities
+   Load AFTER tokens/tokens.css. Plain CSS: works with or without Tailwind.
+   Every class here is grammar (how things look and respond), never a scene.
+   ========================================================================== */
+
+/* ---------- Base ---------------------------------------------------------- */
+
+html {
+  background: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Type ---------------------------------------------------------- */
+
+/* Calistoga carries the brand: big, tight, balanced. Never bold, never caps. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
+  text-wrap: balance;
+}
+
+/* Every paragraph has a reading width and no orphaned last word */
+.measure {
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+.lede {
+  font-size: 1.125rem;
+  color: var(--color-mist);
+}
+@media (min-width: 768px) {
+  .lede { font-size: var(--text-lede); }
+}
+
+/* Small tracked caps: indices (01, 02), card kinds. Used sparingly. */
+.eyebrow {
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* A label that leads with a brand square: the kit's signature marker */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: var(--text-small);
+  color: var(--color-mist);
+}
+.swatch {
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  flex: none;
+  border-radius: var(--radius-swatch);
+  background: var(--accent);
+}
+.swatch--2 { background: var(--accent-2); }
+
+/* A short accent bar above a section title */
+.accent-bar {
+  display: block;
+  width: 2.5rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* Type over imagery or a living background keeps a soft dark halo */
+.over-field {
+  text-shadow: var(--halo-text);
+}
+
+/* ---------- Layout -------------------------------------------------------- */
+
+.page {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  box-sizing: border-box;
+}
+
+/* Faint 12-column rules behind a section: structure you feel more than see */
+.grid-rules {
+  background-image: linear-gradient(to right, var(--line) 1px, transparent 1px);
+  background-size: calc((100% - 1px) / 12) 100%;
+}
+
+.rule-top {
+  border-top: 1px solid var(--line-strong);
+  padding-top: 1.5rem;
+}
+
+/* ---------- Cut corners: the chamfer of the SupplyChainz mark ------------ */
+/* For buttons, badges and small solid things. Panels stay rounded. */
+
+.cut {
+  clip-path: polygon(
+    var(--cut) 0%, calc(100% - var(--cut)) 0%, 100% var(--cut), 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, var(--cut) 100%, 0% calc(100% - var(--cut)), 0% var(--cut)
+  );
+}
+
+.cut-sm {
+  clip-path: polygon(
+    var(--cut-sm) 0%, calc(100% - var(--cut-sm)) 0%, 100% var(--cut-sm), 100% calc(100% - var(--cut-sm)),
+    calc(100% - var(--cut-sm)) 100%, var(--cut-sm) 100%, 0% calc(100% - var(--cut-sm)), 0% var(--cut-sm)
+  );
+}
+
+/* Outlined cut shape: a 1px hairline that follows the chamfer */
+.cut-border {
+  position: relative;
+  background: var(--line-strong);
+  clip-path: polygon(
+    var(--cut) 0%, calc(100% - var(--cut)) 0%, 100% var(--cut), 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, var(--cut) 100%, 0% calc(100% - var(--cut)), 0% var(--cut)
+  );
+}
+.cut-border::before {
+  --c: calc(var(--cut) - 1px);
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  background: var(--color-ink);
+  clip-path: polygon(
+    var(--c) 0%, calc(100% - var(--c)) 0%, 100% var(--c), 100% calc(100% - var(--c)),
+    calc(100% - var(--c)) 100%, var(--c) 100%, 0% calc(100% - var(--c)), 0% var(--c)
+  );
+  transition: background-color var(--dur-quick) var(--ease-expo);
+}
+.cut-border:hover::before { background: var(--color-deep); }
+.cut-border > * { position: relative; z-index: 1; }
+
+/* clip-path hides outlines, so cut shapes show focus with a fill */
+.cut:focus-visible,
+.cut-border:focus-visible {
+  outline: none;
+  background: var(--accent);
+  color: var(--color-ink);
+}
+.cut-border:focus-visible::before { background: transparent; }
+
+/* ---------- Buttons ------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font: 600 var(--text-small) / 1.2 var(--font-sans);
+  white-space: nowrap;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  transition:
+    transform 0.5s var(--ease-glide),
+    background-color var(--dur-hover) var(--ease-glide),
+    color var(--dur-hover) var(--ease-glide);
+}
+.btn--sm { padding: 0.625rem 1rem; font-size: 0.875rem; }
+
+/* solid: paper on ink, the one primary action in view */
+.btn--solid { background: var(--color-paper); color: var(--color-ink); }
+.btn--solid:hover { background: #fff; }
+
+/* outline: everything secondary */
+.btn--outline { color: var(--color-paper); }
+
+/* quiet, physical: a hair of lift on hover, a press on click */
+.btn:hover { transform: translateY(-1px) scale(1.015); }
+.btn:active { transform: scale(0.985); transition-duration: var(--dur-press); }
+
+/* ---------- Glass --------------------------------------------------------- */
+/* Surfaces are tinted glass over the night, never opaque boxes. */
+
+.glass {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+  background: var(--glass-bg);
+  box-shadow: var(--glass-ring);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+}
+.glass--strong { background: var(--glass-bg-strong); }
+.glass--navy { background: linear-gradient(160deg, rgb(28 48 92 / 0.75), rgb(13 26 58 / 0.6)); }
+.glass--note { border-radius: var(--radius-note); background: rgb(13 26 58 / 0.45); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+
+/* a soft light along the top edge of the glass */
+.glass-edge::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--glass-edge-light);
+  pointer-events: none;
+}
+
+/* a blurred pool of the world's colour bleeding in from a corner */
+.glow {
+  position: absolute;
+  width: 16rem;
+  height: 16rem;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 0.22;
+  filter: blur(64px);
+  pointer-events: none;
+}
+
+/* Cards that respond: lift, deepen the shadow, strengthen the ring */
+.lift {
+  transition:
+    translate var(--dur-settle) var(--ease-glide),
+    box-shadow var(--dur-settle) var(--ease-glide);
+}
+.lift:hover {
+  translate: 0 -6px;
+  box-shadow: inset 0 0 0 1px var(--line-strong), var(--shadow-lift);
+}
+
+/* A light under the pointer, in the world's colour. Set --mx / --my from JS
+   (see react/components/PointerLight.tsx); the element needs position: relative. */
+.pointer-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 16%, transparent), transparent 65%);
+  transition: opacity 0.5s var(--ease-glide);
+}
+.pointer-light:hover::before { opacity: 1; }
+
+/* ---------- Forms --------------------------------------------------------- */
+
+.field-label {
+  display: block;
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--color-paper);
+  margin-bottom: 0.625rem;
+}
+.field-label .req { margin-left: 0.25rem; color: var(--color-orange); }
+
+.field {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font: 400 1rem / 1.4 var(--font-sans);
+  color: var(--color-paper);
+  background: rgb(8 17 40 / 0.55);
+  border: 0;
+  border-radius: var(--radius-field);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: box-shadow 0.3s var(--ease-glide), background-color 0.3s var(--ease-glide);
+}
+.field::placeholder { color: rgb(130 146 180 / 0.8); }
+.field:hover { box-shadow: inset 0 0 0 1px rgb(238 242 248 / 0.3); }
+.field:focus { outline: none; background: rgb(8 17 40 / 0.8); box-shadow: inset 0 0 0 2px var(--accent); }
+.field option { background: var(--color-deep); color: var(--color-paper); }
+
+input[type='checkbox'], input[type='radio'] { accent-color: var(--accent); }
+
+/* ---------- Navigation ---------------------------------------------------- */
+
+/* One slim bar: clear at the top, glass once the page moves (add .is-solid) */
+.nav-bar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  transition: background-color var(--dur-settle) var(--ease-glide), box-shadow var(--dur-settle) var(--ease-glide);
+}
+.nav-bar.is-solid {
+  background: rgb(8 17 40 / 0.55);
+  box-shadow: 0 1px 0 rgb(238 242 248 / 0.06);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  backdrop-filter: blur(24px) saturate(1.5);
+}
+
+.nav-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  height: var(--nav-height);
+  padding-inline: var(--gutter);
+}
+.nav-items { display: none; gap: 2.25rem; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 768px) {
+  .nav-row { grid-template-columns: 1fr auto 1fr; }
+  .nav-items { display: flex; }
+}
+
+/* an underline that grows from the centre */
+.nav-link {
+  position: relative;
+  font-size: 0.875rem;
+  color: var(--color-mist);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.35s var(--ease-glide);
+}
+.nav-link:hover, .nav-link[aria-current='true'] { color: var(--color-paper); }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  bottom: -6px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transition: left 0.45s var(--ease-glide), right 0.45s var(--ease-glide), opacity 0.3s var(--ease-glide);
+}
+.nav-link:hover::after, .nav-link[aria-current='true']::after { left: 0; right: 0; opacity: 0.7; }
+
+/* a hairline showing how far you've read; JS sets transform: scaleX(p) */
+.read-progress {
+  height: 1px;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: color-mix(in srgb, var(--accent) 80%, transparent);
+}
+
+/* Inline text links */
+.link {
+  color: var(--color-paper);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--dur-hover) var(--ease-glide);
+}
+.link:hover { color: var(--accent); }
+
+/* ---------- Arrival ------------------------------------------------------- */
+/* Nothing pops in. Things come out of soft focus, rise a little, settle.
+   Toggle .is-on from state (in view, step reached, data loaded). Stagger
+   siblings with transition-delay in steps of var(--stagger). */
+
+.arrive {
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(18px);
+  transition:
+    opacity var(--dur-arrive) var(--ease-expo),
+    filter var(--dur-arrive) var(--ease-expo),
+    transform var(--dur-arrive) var(--ease-expo);
+}
+.arrive.is-on {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+/* ---------- Edges --------------------------------------------------------- */
+/* No hard edge ever shows: canvases, images and scenes dissolve into the night */
+
+.feather-edges {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 8%, #000 82%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 8%, #000 82%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.melt-y {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 80%, transparent 100%);
+}
+
+/* Photography is graded toward navy: put this over any image */
+.navy-grade { position: relative; }
+.navy-grade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, transparent 40%, rgb(8 17 40 / 0.75) 100%),
+    rgb(28 48 92 / var(--grade, 0.45));
+  mix-blend-mode: multiply;
+}
+
+/* ---------- Utilities ----------------------------------------------------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 50;
+  transform: translateY(-6rem);
+}
+.skip-link:focus { transform: none; }
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+/* ---------- Reduced motion: a first-class version, not an afterthought --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .arrive { filter: none; transform: none; }
+  .btn:hover, .btn:active, .lift:hover { transform: none; translate: none; }
+
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  html { scroll-behavior: auto; }
+}

@@ -14,7 +14,7 @@ export function Footer() {
             <div className="md:col-span-5">
               <Logo label="Applied AI" />
               <p className="mt-4 max-w-[34ch] text-[0.9375rem] text-mist">{footer.blurb}</p>
-              <a href={`mailto:${site.contactEmail}`} className="mt-4 inline-block text-[0.9375rem] font-semibold text-paper hover:text-signal">
+              <a href={`mailto:${site.contactEmail}`} className="mt-4 inline-block text-[0.9375rem] font-semibold text-paper hover:text-cyan">
                 {site.contactEmail}
               </a>
             </div>

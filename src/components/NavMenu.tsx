@@ -87,29 +87,40 @@ export function NavMenu({ group, active }: { group: Group; active: boolean }) {
           open ? 'visible translate-y-0 opacity-100 blur-0' : 'invisible -translate-y-1.5 opacity-0 blur-[6px]'
         }`}
       >
-        <ul className="relative w-60 overflow-hidden rounded-xl bg-deep/90 p-1.5 ring-1 ring-[var(--line)] backdrop-blur-xl shadow-[0_30px_80px_-30px_rgb(0_0_0/0.7)]">
+        <ul className="glass glass--strong glass-edge w-72 p-1.5 shadow-[0_30px_80px_-30px_rgb(0_0_0/0.7)]">
           <span
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,rgb(238_242_248/0.25),transparent)]"
           />
-          {group.items.map((item) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="group/item block rounded-lg px-3 py-2 transition-colors duration-300 hover:bg-paper/[0.06] focus-visible:bg-paper/[0.06]"
-              >
+          {group.items.map((item) => {
+            const body = (
+              <>
                 <span className="flex items-center justify-between gap-4">
-                  <span className="flex items-center gap-2 text-[0.875rem] font-semibold text-paper">
-                    <span aria-hidden="true" className="h-2 w-2 rounded-[2px]" style={{ background: group.color }} />
+                  <span className={`flex items-center gap-2 text-[0.875rem] font-semibold ${item.href ? 'text-paper' : 'text-mist'}`}>
+                    <span aria-hidden="true" className="h-2 w-2 rounded-[2px]" style={{ background: group.color, opacity: item.href ? 1 : 0.5 }} />
                     {item.label}
                   </span>
-                  <span className="text-[0.75rem] text-haze">{item.status}</span>
+                  <span className="shrink-0 text-[0.75rem] whitespace-nowrap text-haze">{item.status}</span>
                 </span>
-                <span className="mt-0.5 block pl-4 text-[0.75rem] leading-snug text-mist">{item.note}</span>
-              </a>
-            </li>
-          ))}
+              </>
+            )
+            return (
+              <li key={item.label}>
+                {item.href ? (
+                  <a
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="group/item block rounded-lg px-3 py-2 transition-colors duration-300 hover:bg-paper/[0.06] focus-visible:bg-paper/[0.06]"
+                  >
+                    {body}
+                  </a>
+                ) : (
+                  // not on this page yet: shown, but not a link
+                  <div className="block cursor-default rounded-lg px-3 py-2">{body}</div>
+                )}
+              </li>
+            )
+          })}
         </ul>
       </div>
     </li>

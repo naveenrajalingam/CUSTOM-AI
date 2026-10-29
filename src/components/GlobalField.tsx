@@ -9,7 +9,6 @@ import { ease, lerp, prefersReducedMotion } from '../lib/motion'
 // transparent on top, so there are no seams.
 
 const INK = '#081128'
-const BRAND = ['#34bde8', '#f5b134', '#ea7532', '#14a17e', '#ed1b24']
 
 /**
  * Square points with a soft glow, drawn with depth: each drifts on its own slow
@@ -147,8 +146,8 @@ function buildField(count: number) {
       y = (Math.random() + Math.random() + Math.random() - 1.5) * (36 + r * 0.16)
     }
     pos.set([x, y, z], i * 3)
-    const tinted = Math.random() < 0.13
-    tmp.set(tinted ? BRAND[i % BRAND.length] : paper)
+    // all plain, soft light: coloured stars caught the eye too much
+    tmp.set(paper)
     const dim = shell ? 0.35 : 0.55 + Math.random() * 0.45
     col.set([tmp.r * dim, tmp.g * dim, tmp.b * dim], i * 3)
     // a spread of sizes, so near and far read as depth rather than one flat layer
@@ -170,13 +169,13 @@ export default function GlobalField() {
     const host = hostRef.current!
     let renderer: THREE.WebGLRenderer
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' })
+      renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false, powerPreference: 'high-performance' })
     } catch {
       return // no WebGL: the plain navy page remains
     }
     const small = window.matchMedia('(max-width: 767px)').matches
     // capped: the field is soft points, so extra pixels cost GPU time without looking sharper
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25))
     renderer.setClearColor(INK)
     host.appendChild(renderer.domElement)
     renderer.domElement.style.display = 'block'
@@ -185,7 +184,8 @@ export default function GlobalField() {
     const camera = new THREE.PerspectiveCamera(50, 1, 1, 4000)
     const reduced = prefersReducedMotion()
 
-    const geo = buildField(small ? 1800 : 4800)
+    // sparse on purpose: a calm backdrop rather than a dotted pattern
+    const geo = buildField(small ? 400 : 850)
     const mat = squareMaterial()
     // keep points near the camera from ballooning into big squares
     mat.uniforms.uMax.value = (small ? 5 : 6) * renderer.getPixelRatio()
@@ -201,9 +201,16 @@ export default function GlobalField() {
 
     let w = 1
     let h = 1
+    let maxScroll = 0 // how far the page can scroll, measured when it changes
+    const measure = () => {
+      maxScroll = document.documentElement.scrollHeight - h
+    }
+    const pageSize = new ResizeObserver(measure)
+    pageSize.observe(document.body)
     const resize = () => {
       w = Math.max(1, window.innerWidth)
       h = Math.max(1, window.innerHeight)
+      measure()
       renderer.setSize(w, h)
       camera.aspect = w / h
       camera.fov = w < h ? 68 : 50
@@ -219,8 +226,7 @@ export default function GlobalField() {
 
     const render = (now: number) => {
       const t = reduced ? 0 : (now - start) / 1000
-      const max = document.documentElement.scrollHeight - h
-      const target = max > 0 ? window.scrollY / max : 0
+      const target = maxScroll > 0 ? window.scrollY / maxScroll : 0
       travel += (target - travel) * (reduced ? 1 : 0.06)
       const g = ease(travel)
 
@@ -235,7 +241,9 @@ export default function GlobalField() {
       points.rotation.y = t * 0.012
 
       // quiet behind the type at the top, fuller as the story goes on
-      mat.uniforms.uOpacity.value = lerp(0.42, 0.7, Math.min(1, travel * 2.5))
+      // full behind the hero, fading to a faint trace once you scroll past it, so the reading sections stay calm
+      const pastHero = Math.min(1, window.scrollY / (h * 1.1))
+      mat.uniforms.uOpacity.value = lerp(0.5, 0.08, pastHero * pastHero * (3 - 2 * pastHero))
       mat.uniforms.uTime.value = t
 
       ptr.x += (visitor.x - ptr.x) * 0.25
@@ -253,8 +261,11 @@ export default function GlobalField() {
 
     let raf = 0
     let running = false
+    let odd = false
     const loop = (now: number) => {
-      render(now)
+      odd = !odd
+      const faint = window.scrollY > h * 1.1
+      if (!faint || odd) render(now)
       if (running && !reduced) raf = requestAnimationFrame(loop)
     }
     const play = () => {
@@ -287,6 +298,7 @@ export default function GlobalField() {
 
     return () => {
       pause()
+      pageSize.disconnect()
       window.removeEventListener('resize', onResize)
       window.removeEventListener('scroll', still)
       window.removeEventListener('pointermove', onPointer)

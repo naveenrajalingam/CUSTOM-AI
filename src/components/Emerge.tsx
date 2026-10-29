@@ -1,53 +1,33 @@
-import { useEffect, useRef, type ReactNode } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { prefersReducedMotion } from '../lib/motion'
 
-gsap.registerPlugin(ScrollTrigger)
-
 /**
- * The same arrival as the chapter photos, for blocks of content: as a block
- * scrolls in it comes out of a soft blur, rises a little and settles, tied to
- * the scroll so it reverses smoothly too. Never wrap pinned or sticky scenes.
+ * The arrival for blocks of content: the first time a block scrolls into view
+ * it comes out of soft focus, rises a little and settles, then stays (the
+ * devkit's .arrive). It is a one-off CSS transition, not tied to the scroll,
+ * so scrolling past it afterwards costs nothing.
  */
-export function Emerge({
-  children,
-  className = '',
-  start = 'top 95%',
-  end = 'top 72%',
-}: {
-  children: ReactNode
-  className?: string
-  /** ScrollTrigger positions for when the block starts and finishes arriving */
-  start?: string
-  end?: string
-}) {
+export function Emerge({ children, className = '' }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null)
+  const [shown, setShown] = useState(() => prefersReducedMotion())
 
   useEffect(() => {
-    if (prefersReducedMotion()) return
-    const el = ref.current!
-    const tween = gsap.fromTo(
-      el,
-      { opacity: 0, y: 36, filter: 'blur(10px)' },
-      {
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        ease: 'power2.out',
-        scrollTrigger: { trigger: el, start, end, scrub: 0.5 },
-        // drop the filter once settled so text renders crisp and cheap
-        onComplete: () => gsap.set(el, { clearProps: 'filter' }),
+    const el = ref.current
+    if (!el || shown) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return
+        setShown(true)
+        io.disconnect()
       },
+      { rootMargin: '0px 0px -8% 0px' },
     )
-    return () => {
-      tween.scrollTrigger?.kill()
-      tween.kill()
-    }
-  }, [start, end])
+    io.observe(el)
+    return () => io.disconnect()
+  }, [shown])
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={`arrive ${shown ? 'is-on' : ''} ${className}`}>
       {children}
     </div>
   )

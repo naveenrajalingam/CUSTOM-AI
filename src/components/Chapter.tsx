@@ -22,9 +22,10 @@ type Props = {
   /** the product this chapter is about, shown above the title */
   name: string
   title: string
-  lede: string
-  accent: 'signal' | 'amber'
-  /** a line under the lede, e.g. a status */
+  /** a line under the title; optional, for a chapter whose title says it all */
+  lede?: string
+  accent: 'cyan' | 'amber'
+  /** a short status shown beside the product's badge */
   note?: ReactNode
   /** more of the chapter under the lede, in the same column */
   children?: ReactNode
@@ -36,7 +37,7 @@ type Props = {
   wide?: 'text' | 'aside' | 'even'
 }
 
-const swatch = { signal: 'bg-signal', amber: 'bg-amber' }
+const swatch = { cyan: 'bg-cyan', amber: 'bg-amber' }
 
 export function Chapter({ id, image, art, focus, tint, name, title, lede, accent, note, children, aside, asideFirst = false, wide = 'text' }: Props) {
   const ref = useRef<HTMLDivElement>(null)
@@ -47,13 +48,10 @@ export function Chapter({ id, image, art, focus, tint, name, title, lede, accent
   useEffect(() => {
     const el = ref.current!
     if (!scene) {
-      // a plain opener: its words arrive once it is on screen and stay. The browser's own
-      // visibility check can't work from stale measurements after a long jump down the page.
-      const io = new IntersectionObserver(([e]) => {
-        if (!e.isIntersecting) return
-        setShown(true)
-        io.disconnect()
-      })
+      // a plain opener: its words arrive each time it comes on screen, and leave once it is
+      // fully off it, so scrolling back brings them in again. The browser's own visibility
+      // check can't work from stale measurements after a long jump down the page.
+      const io = new IntersectionObserver(([e]) => setShown(e.isIntersecting))
       io.observe(el)
       return () => io.disconnect()
     }
@@ -71,20 +69,21 @@ export function Chapter({ id, image, art, focus, tint, name, title, lede, accent
   }, [scene])
 
   const swap = (d: number) => ({
-    className: `blur-swap ${shown ? 'is-on' : ''}`,
+    className: `arrive ${shown ? 'is-on' : ''}`,
     style: { transitionDelay: shown ? `${d}s` : '0s' },
   })
 
   // one column: the product's name as a badge, the title, and the lede right beneath it
   const words = (
     <div className="over-field mx-auto w-full max-w-[1320px]">
-      <p
-        {...swap(0)}
-        className={`${swap(0).className} inline-flex items-center gap-2.5 rounded-full bg-deep/80 px-4 py-2 text-[0.9375rem] font-semibold text-paper ring-1 ring-[var(--line-strong)]`}
-      >
-        <span aria-hidden="true" className={`inline-block h-2.5 w-2.5 shrink-0 rounded-[2px] ${swatch[accent]}`} />
-        {name}
-      </p>
+      {/* the product's badge, with its status (if any) beside it */}
+      <div {...swap(0)} className={`${swap(0).className} flex flex-wrap items-center gap-3`}>
+        <p className="cut-border inline-flex items-center gap-2.5 px-4 py-2 text-[0.9375rem] font-semibold text-paper">
+          <span aria-hidden="true" className={`inline-block h-2.5 w-2.5 shrink-0 rounded-[2px] ${swatch[accent]}`} />
+          <span>{name}</span>
+        </p>
+        {note}
+      </div>
       <h2
         id={`${id}-title`}
         {...swap(0.08)}
@@ -92,13 +91,10 @@ export function Chapter({ id, image, art, focus, tint, name, title, lede, accent
       >
         {title}
       </h2>
-      <p {...swap(0.16)} className={`${swap(0.16).className} mt-5 max-w-[44rem] text-[1.0625rem] text-mist text-pretty md:text-[1.1875rem]`}>
-        {lede}
-      </p>
-      {note && (
-        <div {...swap(0.24)} className={`${swap(0.24).className} mt-6`}>
-          {note}
-        </div>
+      {lede && (
+        <p {...swap(0.16)} className={`${swap(0.16).className} mt-5 max-w-[44rem] text-[1.0625rem] text-mist text-pretty md:text-[1.1875rem]`}>
+          {lede}
+        </p>
       )}
     </div>
   )

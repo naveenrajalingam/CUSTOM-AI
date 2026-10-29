@@ -9,7 +9,7 @@ import { setScrollLocked } from '../lib/scroll'
 const { fields } = contact
 
 const INPUT =
-  'w-full rounded-xl bg-ink/55 px-4 py-3.5 text-[1rem] text-paper ring-1 ring-[var(--line-strong)] transition-[box-shadow,background-color] duration-300 ease-[var(--ease-glide)] placeholder:text-haze/80 hover:ring-paper/30 focus:bg-ink/80 focus:ring-2 focus:ring-signal focus:outline-none aria-invalid:ring-orange'
+  'w-full rounded-xl bg-ink/55 px-4 py-3.5 text-[1rem] text-paper ring-1 ring-[var(--line-strong)] transition-[box-shadow,background-color] duration-300 ease-[var(--ease-glide)] placeholder:text-haze/80 hover:ring-paper/30 focus:bg-ink/80 focus:ring-2 focus:ring-cyan focus:outline-none aria-invalid:ring-orange'
 
 type Key = 'name' | 'email' | 'message'
 const required: { key: Key; error: string }[] = [
@@ -219,7 +219,7 @@ export function Contact() {
               </div>
 
               <label className="mt-7 flex cursor-pointer items-start gap-3.5 text-[0.9375rem] text-mist">
-                <input type="checkbox" name="consent" defaultChecked className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-signal" />
+                <input type="checkbox" name="consent" defaultChecked className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-cyan" />
                 <span>
                   {contact.consent}
                   {/* only once there is a privacy page to point to */}
@@ -227,7 +227,7 @@ export function Contact() {
                     <>
                       {' '}
                       {contact.privacyLead}{' '}
-                      <a href={site.privacyUrl} className="font-semibold text-paper underline underline-offset-4 hover:text-signal">
+                      <a href={site.privacyUrl} className="font-semibold text-paper underline underline-offset-4 hover:text-cyan">
                         {contact.privacyLabel}
                       </a>
                       .
@@ -249,7 +249,7 @@ export function Contact() {
                 {feedback === 'sent' && (
                   <>
                     {contact.sent}{' '}
-                    <a href={`mailto:${site.contactEmail}`} className="text-paper underline underline-offset-4 hover:text-signal">
+                    <a href={`mailto:${site.contactEmail}`} className="text-paper underline underline-offset-4 hover:text-cyan">
                       {site.contactEmail}
                     </a>
                     .
@@ -263,7 +263,7 @@ export function Contact() {
               <p className="text-[0.9375rem] text-haze">{contact.emailTitle}</p>
               <a
                 href={`mailto:${site.contactEmail}`}
-                className="mt-3 inline-block text-[1.25rem] font-semibold tracking-tight break-all text-paper transition-colors duration-300 hover:text-signal"
+                className="mt-3 inline-block text-[1.25rem] font-semibold tracking-tight break-all text-paper transition-colors duration-300 hover:text-cyan"
               >
                 {site.contactEmail}
               </a>

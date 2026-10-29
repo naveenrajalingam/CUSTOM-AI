@@ -113,7 +113,7 @@ export function CadConsole({ stage }: { stage: number }) {
     let shownCount = -1
     const dotClass: Record<Status, string> = {
       staged: 'bg-orange',
-      assembling: 'bg-signal live-dot',
+      assembling: 'bg-cyan live-dot',
       assembled: 'bg-green',
       resetting: 'bg-haze',
     }
@@ -121,7 +121,7 @@ export function CadConsole({ stage }: { stage: number }) {
       if (count !== shownCount) {
         shownCount = count
         countRef.current!.textContent = `${count.toLocaleString('en-US')} / ${shown.toLocaleString('en-US')}`
-        countRef.current!.className = `font-semibold tabular-nums ${count === shown ? 'text-green' : 'text-signal'}`
+        countRef.current!.className = `font-semibold tabular-nums ${count === shown ? 'text-green' : 'text-cyan'}`
       }
       if (status !== shownStatus) {
         shownStatus = status
@@ -447,13 +447,13 @@ export function CadConsole({ stage }: { stage: number }) {
       />
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--line)] px-5 py-3.5 text-[0.8125rem] md:px-7">
         <span className="flex items-center gap-2 text-mist">
-          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-[2px] bg-signal" />
+          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-[2px] bg-cyan" />
           <span key={s.cadMode} className="anim-fade tracking-[0.06em]">
             {s.cadMode}
           </span>
         </span>
         <span className="flex items-center gap-1.5 text-mist">
-          <span ref={countRef} className="font-semibold tabular-nums text-signal">
+          <span ref={countRef} className="font-semibold tabular-nums text-cyan">
             0 / {shown.toLocaleString('en-US')}
           </span>
           <span className="text-haze uppercase">{cad.partsLabel}</span>

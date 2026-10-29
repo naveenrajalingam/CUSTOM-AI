@@ -1,23 +1,21 @@
 import { hr } from '../content'
 import { Emerge } from './Emerge'
 
-// What sets HR Central apart, in a glass card beside the chapter's heading:
-// the statement.
+// What sets HR Central apart, as a pull-quote beside the chapter's heading: a
+// large amber quotation mark, a thin amber rule, and the statement set lighter
+// than the heading so the two never compete.
 export function Differentiator() {
   const { differentiator: d } = hr
   return (
     <Emerge>
-      <div className="relative overflow-hidden rounded-3xl bg-deep/80 p-7 ring-1 ring-[var(--line)] md:p-9">
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,rgb(238_242_248/0.25),transparent)]"
-        />
-        <p className="flex items-center gap-2.5 text-[0.9375rem] text-mist">
-          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-[2px] bg-amber" />
-          {d.tag}
-        </p>
-        <blockquote className="display mt-4 text-[clamp(1.25rem,1.7vw,1.6rem)] leading-snug text-paper">{d.quote}</blockquote>
-      </div>
+      <figure className="relative pl-7 md:pl-9">
+        <span aria-hidden="true" className="absolute top-1 bottom-1 left-0 w-[3px] rounded-full bg-[linear-gradient(to_bottom,var(--color-amber),transparent)]" />
+        <span aria-hidden="true" className="display block text-[3.5rem] leading-[0.6] text-amber/80">
+          “
+        </span>
+        <blockquote className="mt-3 max-w-[30ch] text-[clamp(1.15rem,1.5vw,1.4rem)] leading-snug font-normal text-paper/80">{d.quote}</blockquote>
+        <figcaption className="mt-5 text-[0.75rem] tracking-[0.14em] text-haze uppercase">{d.tag}</figcaption>
+      </figure>
     </Emerge>
   )
 }

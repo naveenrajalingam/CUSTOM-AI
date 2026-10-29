@@ -3,18 +3,20 @@ import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Chapter } from './components/Chapter'
+import { CampusToCompany } from './components/CampusToCompany'
 import { Contact } from './components/Contact'
-import { CapabilityTabs } from './components/CapabilityTabs'
 import { Differentiator } from './components/Differentiator'
 import { Footer } from './components/Footer'
 import { EngineeringStages } from './components/EngineeringStages'
 import { Hero } from './components/Hero'
+import { MarketingIntelligence } from './components/MarketingIntelligence'
+import { ObserverEngine } from './components/ObserverEngine'
 import { SectionDivider, SectionGlow } from './components/SectionMarks'
 import { SignalCursor } from './components/SignalCursor'
 import { SiteNav } from './components/SiteNav'
 import { contactHref, engineering, hr } from './content'
 import { prefersReducedMotion } from './lib/motion'
-import { scrollToId, setScroller } from './lib/scroll'
+import { jumpToId, scrollToId, setScroller } from './lib/scroll'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -44,19 +46,38 @@ function useGlideLinks() {
   }, [])
 }
 
-/** Arriving with a #hash (an old link to a section, or #lets-talk): glide there once the page has settled. */
+/**
+ * Arriving with a #hash (a link to a section, or #lets-talk): open the page
+ * right at that section, without a glide down from the top. Once fonts and
+ * images have settled it lands again, in case they moved the layout, unless
+ * the reader has started scrolling by then.
+ */
 function useArrivalHash() {
   useEffect(() => {
     const id = decodeURIComponent(window.location.hash.slice(1))
     // #lets-talk opens the contact window instead (see Contact)
     if (!id || `#${id}` === contactHref) return
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
-    const go = () => {
-      ScrollTrigger.refresh()
-      scrollToId(id)
+    let reading = false
+    const readerMoved = () => {
+      reading = true
     }
-    const t = window.setTimeout(go, 400)
-    return () => window.clearTimeout(t)
+    const land = () => {
+      if (reading) return
+      ScrollTrigger.refresh()
+      jumpToId(id)
+    }
+    const moves = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const
+    moves.forEach((m) => window.addEventListener(m, readerMoved, { passive: true, once: true }))
+    const frame = requestAnimationFrame(land)
+    document.fonts?.ready.then(land)
+    window.addEventListener('load', land, { once: true })
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('load', land)
+      moves.forEach((m) => window.removeEventListener(m, readerMoved))
+      reading = true // a late fonts.ready must not move the page after this
+    }
   }, [])
 }
 
@@ -84,8 +105,10 @@ function useSmoothScroll() {
     }
     if (prefersReducedMotion()) return stopWatching
 
-    // a light glide: smooth, but close behind the wheel so it never feels late
-    const lenis = new Lenis({ lerp: 0.14, wheelMultiplier: 1, touchMultiplier: 1.4 })
+    // a calm, easy glide: each wheel notch or trackpad swipe moves the page about half as far as
+    // the browser would, it eases to a stop without trailing behind the hand, and following a
+    // link first stops any leftover glide. Touch keeps the phone's own scrolling.
+    const lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 0.5, smoothWheel: true, stopInertiaOnNavigate: true })
     setScroller(lenis)
     if (import.meta.env.DEV) Object.assign(window, { __lenis: lenis }) // for checking scenes by hand
     lenis.on('scroll', ScrollTrigger.update)
@@ -134,23 +157,28 @@ export default function App() {
           <SectionDivider color={3} />
           <section aria-labelledby={`${hr.id}-title`} className="relative">
             <SectionGlow accent="amber" side="left" />
-            <Chapter
-              id={hr.id}
-              name={hr.name}
-              title={hr.title}
-              lede={hr.lede}
-              accent="amber"
-              aside={<Differentiator />}
-              asideFirst
-              note={
-                <span className="inline-flex items-center gap-2 rounded-full bg-deep/80 px-3.5 py-1.5 text-[0.875rem] text-mist ring-1 ring-[var(--line)]">
-                  <span aria-hidden="true" className="live-dot h-2 w-2 rounded-[2px] bg-amber" />
-                  {hr.status}
-                </span>
+            <CampusToCompany
+              intro={
+                <Chapter
+                  id={hr.id}
+                  name={hr.name}
+                  title={hr.title}
+                  accent="amber"
+                  aside={<Differentiator />}
+                  note={
+                    <span className="inline-flex items-center gap-2 text-[0.875rem] text-haze">
+                      <span aria-hidden="true" className="live-dot h-1.5 w-1.5 rounded-full bg-amber" />
+                      {hr.status}
+                    </span>
+                  }
+                />
               }
             />
-            <CapabilityTabs groups={hr.groups} />
           </section>
+          <SectionDivider color={0} />
+          <ObserverEngine />
+          <SectionDivider color={4} />
+          <MarketingIntelligence />
         </main>
         <Footer />
       </div>

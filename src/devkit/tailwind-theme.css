@@ -1,0 +1,37 @@
+/* ==========================================================================
+   SupplyChainz Worlds: Tailwind CSS v4 theme
+   Usage, in your main stylesheet:
+     @import 'tailwindcss';
+     @import './tokens.css';          (runtime vars: --accent, --line, motion)
+     @import './tailwind-theme.css';  (this file: utilities from the tokens)
+     @import './devkit.css';          (base + .display, .cut, .glass, ...)
+   Gives you bg-ink, text-paper, text-mist, bg-accent, ring-accent,
+   font-display, ease-glide, ... with the same values as tokens.css.
+   ========================================================================== */
+
+@theme {
+  --color-ink: #081128;
+  --color-deep: #0d1a3a;
+  --color-navy: #1c305c;
+  --color-paper: #eef2f8;
+  --color-mist: #9aa8c3;
+  --color-haze: #8292b4;
+
+  --color-cyan: #34bde8;
+  --color-amber: #f5b134;
+  --color-orange: #ea7532;
+  --color-green: #14a17e;
+  --color-red: #ed1b24;
+
+  /* the world's accents resolve at runtime from [data-world] (tokens.css) */
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+
+  --font-display: 'Calistoga', Georgia, serif;
+  --font-sans: 'Aileron', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-glide: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+}
