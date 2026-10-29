@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 import { TwoJourneys } from './TwoJourneys'
 
 // HR Central: the chapter's heading (passed in as `intro`), then the two
-// journeys, Campus to Hire and Hire to Retire, each in a row of its own with
-// room around it (see TwoJourneys). (ClimbFlow, the climb, and TalentFlow, the
+// journeys, Campus to Hire and Hire to Fire, on slides you swipe between
+// (see TwoJourneys). (ClimbFlow, the climb, and TalentFlow, the
 // earlier Campus → Company arc, can be swapped back in here.)
 
 export function CampusToCompany({ intro }: { intro?: ReactNode }) {

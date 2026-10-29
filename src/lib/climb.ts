@@ -1,6 +1,6 @@
 // HR Central's two pillars, covering the whole talent and employee lifecycle:
 // Campus to Hire (a candidate rises to an offer, upskilling on the way) and
-// Hire to Retire (the employee's life in the company).
+// Hire to Fire (the employee's life in the company).
 // Each is a climb of stages, and each stage has a one-line description.
 
 export type ClimbStage = { id: string; label: string; line: string }
@@ -56,7 +56,7 @@ export const pillars: ClimbPillar[] = [
   },
   {
     id: 'lifecycle',
-    label: 'Hire to Retire',
+    label: 'Hire to Fire',
     audience: 'For corporates and HR agencies',
     color: '#f5b134',
     shape: 'cycle',
