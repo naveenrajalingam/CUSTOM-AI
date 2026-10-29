@@ -105,10 +105,10 @@ function useSmoothScroll() {
     }
     if (prefersReducedMotion()) return stopWatching
 
-    // a calm, easy glide: each wheel notch or trackpad swipe moves the page about half as far as
-    // the browser would, it eases to a stop without trailing behind the hand, and following a
-    // link first stops any leftover glide. Touch keeps the phone's own scrolling.
-    const lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 0.5, smoothWheel: true, stopInertiaOnNavigate: true })
+    // the wheel, trackpad and touch scroll natively (instant, familiar, at the visitor's own
+    // system speed); Lenis only glides the page when a link or button sends it to a section,
+    // and following a link first stops any leftover glide
+    const lenis = new Lenis({ smoothWheel: false, stopInertiaOnNavigate: true })
     setScroller(lenis)
     if (import.meta.env.DEV) Object.assign(window, { __lenis: lenis }) // for checking scenes by hand
     lenis.on('scroll', ScrollTrigger.update)

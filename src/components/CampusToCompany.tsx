@@ -1,17 +1,18 @@
 import type { ReactNode } from 'react'
-import { ClimbFlow } from './ClimbFlow'
+import { TwoJourneys } from './TwoJourneys'
 
-// HR Central as one screen: the chapter's heading (passed in as `intro`) and
-// the climb from onboarding to hiring beneath it (see ClimbFlow), filling one
-// screen. (TalentFlow, the earlier Campus → Company arc, can be swapped back in here.)
+// HR Central: the chapter's heading (passed in as `intro`), then the two
+// journeys, Campus to Hire and Hire to Retire, each in a row of its own with
+// room around it (see TwoJourneys). (ClimbFlow, the climb, and TalentFlow, the
+// earlier Campus → Company arc, can be swapped back in here.)
 
 export function CampusToCompany({ intro }: { intro?: ReactNode }) {
   return (
-    <div className="flex min-h-[calc(100svh-4rem)] flex-col">
+    <div>
       {intro}
-      <div className="flex flex-1 flex-col justify-center px-6 py-6 md:px-10 md:py-1">
+      <div className="px-6 pt-14 pb-16 md:px-10 md:pt-16 md:pb-20">
         <div className="mx-auto w-full max-w-[1320px]">
-          <ClimbFlow />
+          <TwoJourneys />
         </div>
       </div>
     </div>

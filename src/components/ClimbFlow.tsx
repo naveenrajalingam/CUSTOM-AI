@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
-import { climb } from '../lib/climb'
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import type { ClimbPillar } from '../lib/climb'
 import { prefersReducedMotion, useInView } from '../lib/motion'
 
-// HR Central as a climb: a glowing trail rises from bottom-left to top-right
-// like a path up a hill, with a neon node at each of the seven stages and its
+// One HR Central pillar as a climb: a glowing trail rises from bottom-left to top-right
+// like a path up a hill, with a neon node at each of the pillar's stages and its
 // name below and to the right of it, clear of the trail. One professional
 // climbs it: while on screen it steps through the stages every few seconds,
 // and the climber walks up the trail to the current node (from the top, it
@@ -11,13 +11,18 @@ import { prefersReducedMotion, useInView } from '../lib/motion'
 // the trail lights up to it, the view drifts gently toward it, and its name
 // and line show beneath. Pointing at a node (or focusing it) jumps there and
 // holds; arrow keys step through; moving away plays on. With reduced motion
-// the climber simply stands at the current node and the view stays put.
+// the climber simply stands at the current node and the view stays put. At the
+// top it hands on to the next pillar (`onEnd`), when there is one.
+// A pillar whose shape is a cycle (Hire to Retire) is drawn as a ring instead:
+// the stages sit around a closed loop, each name outside it, and the same
+// professional walks round the loop from joining to leaving.
 
 const STEP_MS = 3500
 const W = 1200
 const H = 340
-// the trail: steep, then a ledge, then steep again, then the long last pitch
-const NODES: [number, number][] = [
+// the trail's shape: steep, then a ledge, then steep again, then the long last pitch.
+// A pillar's nodes sit evenly along it, however many stages it has.
+const SHAPE: [number, number][] = [
   [70, 300],
   [240, 262],
   [400, 222],
@@ -26,42 +31,86 @@ const NODES: [number, number][] = [
   [890, 95],
   [1060, 50],
 ]
-const n = NODES.length
+const heightAt = (x: number) => {
+  const k = SHAPE.findIndex(([sx]) => sx >= x)
+  if (k <= 0) return SHAPE[0][1]
+  const [x0, y0] = SHAPE[k - 1]
+  const [x1, y1] = SHAPE[k]
+  return y0 + ((y1 - y0) * (x - x0)) / (x1 - x0)
+}
 
 // a smooth curve through the nodes (Catmull-Rom as cubic Béziers)
 type Pt = [number, number]
-const SEGS = NODES.slice(0, -1).map((p1, i) => {
-  const p0 = NODES[i - 1] ?? p1
-  const p2 = NODES[i + 1]
-  const p3 = NODES[i + 2] ?? p2
-  const c1: Pt = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6]
-  const c2: Pt = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6]
-  return [p1, c1, c2, p2] as Pt[]
-})
-const TRAIL = `M${NODES[0][0]} ${NODES[0][1]} ` + SEGS.map(([, c1, c2, p2]) => `C ${c1[0]} ${c1[1]}, ${c2[0]} ${c2[1]}, ${p2[0]} ${p2[1]}`).join(' ')
-
-// how far along the trail each node is (0 to 1), measured by sampling each curve
 const bez = (s: Pt[], t: number): Pt => {
   const u = 1 - t
   const k = [u * u * u, 3 * u * u * t, 3 * u * t * t, t * t * t]
   return [k[0] * s[0][0] + k[1] * s[1][0] + k[2] * s[2][0] + k[3] * s[3][0], k[0] * s[0][1] + k[1] * s[1][1] + k[2] * s[2][1] + k[3] * s[3][1]]
 }
-const SEG_LEN = SEGS.map((s) => {
-  let len = 0
-  let prev = bez(s, 0)
-  for (let k = 1; k <= 40; k++) {
-    const p = bez(s, k / 40)
-    len += Math.hypot(p[0] - prev[0], p[1] - prev[1])
-    prev = p
+
+// the ring: an ellipse in the middle of the view; the first stage sits on its
+// left and the rest follow clockwise, over the top and round the bottom
+const RING = { cx: 600, cy: 172, rx: 300, ry: 112 }
+
+type Label = { x: number; y: number; anchor: 'start' | 'middle' | 'end' }
+
+/** the nodes, where each name goes, the trail through them, and how far along the trail each node is (0 to 1) */
+function trailFor(n: number, cycle: boolean) {
+  let nodes: Pt[]
+  let labels: Label[]
+  if (cycle) {
+    const angles = Array.from({ length: n }, (_, i) => Math.PI + (2 * Math.PI * i) / n)
+    nodes = angles.map((a) => [RING.cx + RING.rx * Math.cos(a), RING.cy + RING.ry * Math.sin(a)])
+    labels = angles.map((a) => {
+      const c = Math.cos(a)
+      return {
+        x: RING.cx + (RING.rx + 26) * c,
+        y: RING.cy + (RING.ry + 26) * Math.sin(a) + 8,
+        anchor: c > 0.3 ? 'start' : c < -0.3 ? 'end' : 'middle',
+      }
+    })
+  } else {
+    const x0 = SHAPE[0][0]
+    const x1 = SHAPE[SHAPE.length - 1][0]
+    nodes = Array.from({ length: n }, (_, i) => {
+      const x = x0 + ((x1 - x0) * i) / (n - 1)
+      return [x, heightAt(x)]
+    })
+    labels = nodes.map(([x, y]) => ({ x: x + 20, y: y + 36, anchor: 'start' }))
   }
-  return len
-})
-const TOTAL = SEG_LEN.reduce((a, b) => a + b, 0)
-const AT = NODES.map((_, i) => SEG_LEN.slice(0, i).reduce((a, b) => a + b, 0) / TOTAL)
+  // a ring closes back on its first node
+  const at_ = (i: number) => nodes[cycle ? (i + n) % n : Math.min(Math.max(i, 0), n - 1)]
+  const segs = (cycle ? nodes : nodes.slice(0, -1)).map((p1, i) => {
+    const p0 = at_(i - 1)
+    const p2 = at_(i + 1)
+    const p3 = at_(i + 2)
+    const c1: Pt = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6]
+    const c2: Pt = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6]
+    return [p1, c1, c2, p2] as Pt[]
+  })
+  const d = `M${nodes[0][0]} ${nodes[0][1]} ` + segs.map(([, c1, c2, p2]) => `C ${c1[0]} ${c1[1]}, ${c2[0]} ${c2[1]}, ${p2[0]} ${p2[1]}`).join(' ')
+  // measured by sampling each curve
+  const lens = segs.map((sg) => {
+    let len = 0
+    let prev = bez(sg, 0)
+    for (let k = 1; k <= 40; k++) {
+      const p = bez(sg, k / 40)
+      len += Math.hypot(p[0] - prev[0], p[1] - prev[1])
+      prev = p
+    }
+    return len
+  })
+  const total = lens.reduce((a, b) => a + b, 0)
+  const at = nodes.map((_, i) => lens.slice(0, i).reduce((a, b) => a + b, 0) / total)
+  return { nodes, labels, d: cycle ? `${d} Z` : d, at }
+}
 
 const WALK_SPEED = 0.16 // share of the trail per second
 
-export function ClimbFlow() {
+export function ClimbFlow({ pillar, onEnd }: { pillar: ClimbPillar; onEnd?: () => void }) {
+  const stages = pillar.stages
+  const n = stages.length
+  const cycle = pillar.shape === 'cycle'
+  const { nodes: NODES, labels: LABELS, d: TRAIL, at: AT } = useMemo(() => trailFor(n, cycle), [n, cycle])
   const wrap = useRef<HTMLDivElement>(null)
   const trail = useRef<SVGPathElement>(null)
   const climber = useRef<SVGGElement>(null)
@@ -74,13 +123,13 @@ export function ClimbFlow() {
   const pos = useRef({ at: AT[0], fade: 1 }) // where the climber is on the trail, kept across steps
   useEffect(() => {
     target.current = AT[active]
-  }, [active])
+  }, [AT, active])
 
   useEffect(() => {
     if (calm || !inView || hover !== null) return
-    const id = window.setTimeout(() => setStep((k) => (k + 1) % n), STEP_MS)
+    const id = window.setTimeout(() => (step === n - 1 && onEnd ? onEnd() : setStep((k) => (k + 1) % n)), STEP_MS)
     return () => window.clearTimeout(id)
-  }, [calm, inView, hover, step])
+  }, [calm, inView, hover, step, n, onEnd])
 
   // the climber walks along the trail toward the current node, from a ref in a frame loop (never state)
   useEffect(() => {
@@ -139,12 +188,12 @@ export function ClimbFlow() {
   // the camera: a gentle drift toward the current node
   const [nx, ny] = NODES[active]
   const camera = calm ? undefined : `translate(${(W / 2 - nx) * 0.06}px, ${(H / 2 - ny) * 0.06}px)`
-  const s = climb[active]
+  const s = stages[active]
 
   return (
     <div ref={wrap} onKeyDown={onKey}>
       <div
-        className="relative h-48 select-none md:h-[clamp(14rem,calc(100svh-25rem),24rem)]"
+        className="relative h-48 select-none md:h-[clamp(13rem,calc(100svh-30rem),22rem)]"
         onPointerLeave={(e) => e.pointerType === 'mouse' && setHover(null)}
       >
         <svg
@@ -152,7 +201,7 @@ export function ClimbFlow() {
           preserveAspectRatio="xMidYMid meet"
           className="absolute inset-0 h-full w-full overflow-visible"
           role="group"
-          aria-label="The climb from onboarding to hiring, in seven stages"
+          aria-label={`${pillar.label}: ${cycle ? 'the employee lifecycle' : 'the climb'} through ${n} stages`}
         >
           <defs>
             <linearGradient id="climb-trail" x1="0" y1="1" x2="1" y2="0">
@@ -172,7 +221,12 @@ export function ClimbFlow() {
             </filter>
           </defs>
 
-          <g style={{ transform: camera, transition: 'transform 1.4s var(--ease-glide)' }}>
+          <g
+            style={{
+              transform: camera,
+              transition: 'transform 1.4s var(--ease-glide)',
+            }}
+          >
             {/* the trail: a soft glow, a faint dotted line, and the climbed part lit up to the current node */}
             <path d={TRAIL} fill="none" stroke="url(#climb-trail)" strokeWidth={16} strokeLinecap="round" opacity={0.12} filter="url(#climb-glow)" />
             <path ref={trail} d={TRAIL} fill="none" stroke="rgb(238 242 248 / 0.18)" strokeWidth={1.5} strokeDasharray="2 7" strokeLinecap="round" />
@@ -184,11 +238,20 @@ export function ClimbFlow() {
               strokeLinecap="round"
               pathLength={1}
               strokeDasharray="1 1"
-              style={{ strokeDashoffset: 1 - AT[active], transition: 'stroke-dashoffset 1.6s var(--ease-glide)' }}
+              style={{
+                strokeDashoffset: 1 - AT[active],
+                transition: 'stroke-dashoffset 1.6s var(--ease-glide)',
+              }}
             />
 
+            {cycle && (
+              <text x={RING.cx} y={RING.cy + 6} textAnchor="middle" fontSize={17} letterSpacing={3} fill="#8292b4" aria-hidden="true">
+                EMPLOYEE LIFECYCLE
+              </text>
+            )}
+
             {/* a node per stage: a neon square on the trail, its name below and to the right */}
-            {climb.map((c, i) => {
+            {stages.map((c, i) => {
               const [x, y] = NODES[i]
               const on = i === active
               const reached = i <= active
@@ -207,9 +270,12 @@ export function ClimbFlow() {
                   onFocus={(e) => e.currentTarget.matches(':focus-visible') && look(i)}
                   onBlur={() => setHover(null)}
                   onClick={() => setStep(i)}
-                  style={{ opacity: on ? 1 : reached ? 0.85 : 0.55, transition: 'opacity 0.5s var(--ease-glide)' }}
+                  style={{
+                    opacity: on ? 1 : reached ? 0.85 : 0.55,
+                    transition: 'opacity 0.5s var(--ease-glide)',
+                  }}
                 >
-                  <rect x={x - 30} y={y - 30} width={210} height={90} fill="transparent" />
+                  <rect x={x - 30} y={y - 30} width={cycle ? 60 : 210} height={cycle ? 60 : 90} fill="transparent" />
                   <g transform={`translate(${x} ${y})`}>
                     {on && <rect x={-18} y={-18} width={36} height={36} fill={color} opacity={0.55} filter="url(#climb-glow)" />}
                     {on && !calm && <rect x={-9} y={-9} width={18} height={18} rx={2} fill="none" stroke={color} strokeWidth={1.5} className="climb-pulse" />}
@@ -227,8 +293,9 @@ export function ClimbFlow() {
                     />
                   </g>
                   <text
-                    x={x + 20}
-                    y={y + 36}
+                    x={LABELS[i].x}
+                    y={LABELS[i].y}
+                    textAnchor={LABELS[i].anchor}
                     fontSize={24}
                     fontWeight={600}
                     fill={on ? '#eef2f8' : '#9aa8c3'}

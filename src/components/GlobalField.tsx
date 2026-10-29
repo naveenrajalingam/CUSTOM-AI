@@ -227,7 +227,8 @@ export default function GlobalField() {
     const render = (now: number) => {
       const t = reduced ? 0 : (now - start) / 1000
       const target = maxScroll > 0 ? window.scrollY / maxScroll : 0
-      travel += (target - travel) * (reduced ? 1 : 0.06)
+      // follows the scroll closely, so the field never keeps drifting after the page stops
+      travel += (target - travel) * (reduced ? 1 : 0.35)
       const g = ease(travel)
 
       look.x += (look.tx - look.x) * 0.04

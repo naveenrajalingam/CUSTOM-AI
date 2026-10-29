@@ -9,12 +9,15 @@ export function Differentiator() {
   return (
     <Emerge>
       <figure className="relative pl-7 md:pl-9">
-        <span aria-hidden="true" className="absolute top-1 bottom-1 left-0 w-[3px] rounded-full bg-[linear-gradient(to_bottom,var(--color-amber),transparent)]" />
-        <span aria-hidden="true" className="display block text-[3.5rem] leading-[0.6] text-amber/80">
+        <span
+          aria-hidden="true"
+          className="absolute top-1 bottom-1 left-0 w-[3px] rounded-full bg-[linear-gradient(to_bottom,var(--color-amber),transparent)]"
+        />
+        <span aria-hidden="true" className="display block text-[2.75rem] leading-[0.6] text-amber/80">
           “
         </span>
-        <blockquote className="mt-3 max-w-[30ch] text-[clamp(1.15rem,1.5vw,1.4rem)] leading-snug font-normal text-paper/80">{d.quote}</blockquote>
-        <figcaption className="mt-5 text-[0.75rem] tracking-[0.14em] text-haze uppercase">{d.tag}</figcaption>
+        <blockquote className="mt-2 max-w-[38ch] text-[clamp(1.05rem,1.3vw,1.25rem)] leading-snug font-normal text-paper/80">{d.quote}</blockquote>
+        <figcaption className="mt-3 text-[0.75rem] tracking-[0.14em] text-haze uppercase">{d.tag}</figcaption>
       </figure>
     </Emerge>
   )
